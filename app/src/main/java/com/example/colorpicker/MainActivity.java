@@ -78,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
                     int r = 0;
                     int g = 0;
                     int b = 0;
+                    int minR = 0, minG = 0, minB = 0;
+                    int maxR = 0, maxG = 0, maxB = 0;
+                    int meanR = 0, meanG = 0, meanB = 0;
                     int count = 0;
                     for (int i = -6; i < 6; i++)
                     {
@@ -85,15 +88,35 @@ public class MainActivity extends AppCompatActivity {
                         {
                             int touchColor = getColor(uploadedImage, evX + i, evY + j);
 
-                            r += (touchColor >> 16) & 0xFF;
-                            g += (touchColor >> 8) & 0xFF;
-                            b += (touchColor >> 0) & 0xFF;
+                            r = (touchColor >> 16) & 0xFF;
+                            g = (touchColor >> 8) & 0xFF;
+                            b = (touchColor >> 0) & 0xFF;
+
+                            meanR += r;
+                            meanG += g;
+                            meanB += b;
+                            if(count == 0) {
+                                minR = r;
+                                minG = g;
+                                minB = b;
+                            }
+                            else
+                            {
+                                if(r < minR) minR = r;
+                                if(g < minG) minG = g;
+                                if(b < minB) minB = b;
+                            }
+
+                            if (r > maxR) maxR = r;
+                            if (g > maxG) maxG = g;
+                            if (b > maxB) maxB = b;
+
                             count++;
                             if (count > 1)
                             {
-                                r = r/2;
-                                g = g/2;
-                                b = b/2;
+                                meanR = meanR/2;
+                                meanG = meanG/2;
+                                meanB = meanB/2;
                             }
                         }
                     }
@@ -105,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     int r = (touchColor >> 16) & 0xFF;
                     int g = (touchColor >> 8) & 0xFF;
                     int b = (touchColor >> 0) & 0xFF;*/
-                    rgbColor = String.valueOf(r) + "," + String.valueOf(g) + "," + String.valueOf(b);
+                    rgbColor = String.valueOf(meanR) + "," + String.valueOf(meanG) + "," + String.valueOf(meanB);
                     rgbValue.setText("RGB:    " + rgbColor);
 
                     if (action==MotionEvent.ACTION_UP)
