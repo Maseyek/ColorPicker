@@ -20,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
+import java.util.IntSummaryStatistics;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -73,54 +76,45 @@ public class MainActivity extends AppCompatActivity {
                     final int action = motionEvent.getAction();
                     final int evX = (int) motionEvent.getX();
                     final int evY = (int) motionEvent.getY();
-                    int precision = 50;
-                    /*int touchColor = 0;*/
-                    int r = 0;
-                    int g = 0;
-                    int b = 0;
-                    int minR = 0, minG = 0, minB = 0;
-                    int maxR = 0, maxG = 0, maxB = 0;
-                    int meanR = 0, meanG = 0, meanB = 0;
+                    int precision = 16;
+
+
+                    int[] r = new int[precision*precision];
+                    int[] g = new int[precision*precision];
+                    int[] b = new int[precision*precision];
+
+
+
                     int count = 0;
-                    for (int i = -6; i < 6; i++)
+                    for (int i = -8; i < 8; i++)
                     {
-                        for(int j = -6; j < 6; j++)
+                        for(int j = -8; j < 8; j++)
                         {
                             int touchColor = getColor(uploadedImage, evX + i, evY + j);
 
-                            r = (touchColor >> 16) & 0xFF;
-                            g = (touchColor >> 8) & 0xFF;
-                            b = (touchColor >> 0) & 0xFF;
-
-                            meanR += r;
-                            meanG += g;
-                            meanB += b;
-                            if(count == 0) {
-                                minR = r;
-                                minG = g;
-                                minB = b;
-                            }
-                            else
-                            {
-                                if(r < minR) minR = r;
-                                if(g < minG) minG = g;
-                                if(b < minB) minB = b;
-                            }
-
-                            if (r > maxR) maxR = r;
-                            if (g > maxG) maxG = g;
-                            if (b > maxB) maxB = b;
-
+                            r[count] = (touchColor >> 16) & 0xFF;
+                            g[count] = (touchColor >> 8) & 0xFF;
+                            b[count] = (touchColor >> 0) & 0xFF;
                             count++;
-                            if (count > 1)
-                            {
-                                meanR = meanR/2;
-                                meanG = meanG/2;
-                                meanB = meanB/2;
-                            }
+
                         }
                     }
 
+                    IntSummaryStatistics statR = Arrays.stream(r).summaryStatistics();
+                    IntSummaryStatistics statG = Arrays.stream(g).summaryStatistics();
+                    IntSummaryStatistics statB = Arrays.stream(b).summaryStatistics();
+
+                    int minR = statR.getMin();
+                    int maxR = statR.getMax();
+                    int averageR = (int) statR.getAverage();
+
+                    int minG = statG.getMin();
+                    int maxG = statG.getMax();
+                    int averageG = (int) statG.getAverage();
+
+                    int minB = statB.getMin();
+                    int maxB = statB.getMax();
+                    int averageB = (int) statB.getAverage();
 
 
                     /*int touchColor = getColor(uploadedImage, evX, evY);
@@ -128,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                     int r = (touchColor >> 16) & 0xFF;
                     int g = (touchColor >> 8) & 0xFF;
                     int b = (touchColor >> 0) & 0xFF;*/
-                    rgbColor = String.valueOf(meanR) + "," + String.valueOf(meanG) + "," + String.valueOf(meanB);
+                    rgbColor = String.valueOf(averageR) + "," + String.valueOf(averageG) + "," + String.valueOf(averageB);
                     rgbValue.setText("RGB:    " + rgbColor);
 
                     if (action==MotionEvent.ACTION_UP)
