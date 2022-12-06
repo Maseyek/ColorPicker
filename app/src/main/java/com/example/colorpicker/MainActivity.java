@@ -1,8 +1,11 @@
 package com.example.colorpicker;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -13,6 +16,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public String rgbColor;
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
+    public int precision = 16;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         rgbValue = findViewById(R.id.rgbcolor);
         colorDisplay = findViewById(R.id.color_display);
         uploadedImage = findViewById(R.id.uploaded_image);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         Upload_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,9 +75,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         uploadedImage.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
@@ -76,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                     final int action = motionEvent.getAction();
                     final int evX = (int) motionEvent.getX();
                     final int evY = (int) motionEvent.getY();
-                    int precision = 16;
 
 
                     int[] r = new int[precision*precision];
@@ -136,6 +142,48 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu:
+                openSettingsForResult();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void openSettingsForResult() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        //https://stackoverflow.com/questions/2091465/how-do-i-pass-data-between-activities-in-android-application
+        intent.putExtra("precision", precision);
+        settingsActivityResultLauncher.launch(intent);
+    }
+
+    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
+    ActivityResultLauncher<Intent> settingsActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+                    assert data != null;
+                    setPrecision(Integer.parseInt(String.valueOf(data.getData())));
+                }
+            });
+
+    void setPrecision(int p){
+        if(p > 0)
+            precision = p;
     }
 
     private int getColor(ImageView uploadedImage, int evX, int evY){
