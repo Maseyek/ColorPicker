@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,12 +34,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     public Button Upload_image, Take_Photo;
+    public ImageButton Confirm;
     public TextView rgbValue;
     public ImageView uploadedImage, colorDisplay;
     public String rgbColor;
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
-    public int precision = 16;
+    public int precision = 5, evX, evY;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         rgbValue = findViewById(R.id.rgbcolor);
         colorDisplay = findViewById(R.id.color_display);
         uploadedImage = findViewById(R.id.uploaded_image);
+        Confirm =findViewById(R.id.confirm_button);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,60 +81,73 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(MainActivity.this, "it works", Toast.LENGTH_LONG).show();
+                int[] r = new int[precision*precision];
+                int[] g = new int[precision*precision];
+                int[] b = new int[precision*precision];
+
+
+
+                int count = 0;
+                for (int i = -(precision/2); i < (precision/2); i++)
+                {
+                    for(int j = -(precision/2); j < (precision/2); j++)
+                    {
+                        int touchColor = getColor(uploadedImage, evX + i, evY + j);
+
+                        r[count] = (touchColor >> 16) & 0xFF;
+                        g[count] = (touchColor >> 8) & 0xFF;
+                        b[count] = (touchColor >> 0) & 0xFF;
+                        count++;
+
+                    }
+                }
+
+                IntSummaryStatistics statR = Arrays.stream(r).summaryStatistics();
+                IntSummaryStatistics statG = Arrays.stream(g).summaryStatistics();
+                IntSummaryStatistics statB = Arrays.stream(b).summaryStatistics();
+
+                int minR = statR.getMin();
+                int maxR = statR.getMax();
+                int averageR = (int) statR.getAverage();
+
+                int minG = statG.getMin();
+                int maxG = statG.getMax();
+                int averageG = (int) statG.getAverage();
+
+                int minB = statB.getMin();
+                int maxB = statB.getMax();
+                int averageB = (int) statB.getAverage();
+                rgbColor = String.valueOf(averageR) + "," + String.valueOf(averageG) + "," + String.valueOf(averageB);
+                rgbValue.setText("RGB:    " + rgbColor);
+
+            }
+        });
+
+
+
         uploadedImage.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 try {
                     final int action = motionEvent.getAction();
-                    final int evX = (int) motionEvent.getX();
-                    final int evY = (int) motionEvent.getY();
-
-
-                    int[] r = new int[precision*precision];
-                    int[] g = new int[precision*precision];
-                    int[] b = new int[precision*precision];
+                    evX = (int) motionEvent.getX();
+                    evY = (int) motionEvent.getY();
 
 
 
-                    int count = 0;
-                    for (int i = -8; i < 8; i++)
-                    {
-                        for(int j = -8; j < 8; j++)
-                        {
-                            int touchColor = getColor(uploadedImage, evX + i, evY + j);
-
-                            r[count] = (touchColor >> 16) & 0xFF;
-                            g[count] = (touchColor >> 8) & 0xFF;
-                            b[count] = (touchColor >> 0) & 0xFF;
-                            count++;
-
-                        }
-                    }
-
-                    IntSummaryStatistics statR = Arrays.stream(r).summaryStatistics();
-                    IntSummaryStatistics statG = Arrays.stream(g).summaryStatistics();
-                    IntSummaryStatistics statB = Arrays.stream(b).summaryStatistics();
-
-                    int minR = statR.getMin();
-                    int maxR = statR.getMax();
-                    int averageR = (int) statR.getAverage();
-
-                    int minG = statG.getMin();
-                    int maxG = statG.getMax();
-                    int averageG = (int) statG.getAverage();
-
-                    int minB = statB.getMin();
-                    int maxB = statB.getMax();
-                    int averageB = (int) statB.getAverage();
 
 
-                    /*int touchColor = getColor(uploadedImage, evX, evY);
+                    int touchColor = getColor(uploadedImage, evX, evY);
 
                     int r = (touchColor >> 16) & 0xFF;
                     int g = (touchColor >> 8) & 0xFF;
-                    int b = (touchColor >> 0) & 0xFF;*/
-                    rgbColor = String.valueOf(averageR) + "," + String.valueOf(averageG) + "," + String.valueOf(averageB);
+                    int b = (touchColor >> 0) & 0xFF;
+                    rgbColor = String.valueOf(r) + "," + String.valueOf(g) + "," + String.valueOf(b);
                     rgbValue.setText("RGB:    " + rgbColor);
 
                     if (action==MotionEvent.ACTION_UP)

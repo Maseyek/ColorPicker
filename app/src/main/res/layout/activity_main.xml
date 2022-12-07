@@ -52,7 +52,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/rgbcolor"
@@ -61,7 +61,16 @@
                 android:padding="2dp"
                 android:text="@string/rgb_formate"
                 android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:id="@+id/confirm_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_confirm"
+                 />
         </LinearLayout>
 
     </LinearLayout>
