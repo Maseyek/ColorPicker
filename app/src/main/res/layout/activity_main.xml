@@ -52,7 +52,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            >
 
             <TextView
                 android:id="@+id/rgbcolor"
@@ -62,7 +64,15 @@
                 android:text="@string/rgb_formate"
                 android:textColor="@color/black"
                 android:textSize="20dp"
-                android:layout_weight="1"/>
+                android:layout_weight="2"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0">
 
             <ImageButton
                 android:id="@+id/confirm_button"
@@ -70,10 +80,20 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:src="@drawable/ic_confirm"
-                 />
+                />
+            <ImageButton
+                android:id="@+id/save_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_save"
+                />
         </LinearLayout>
 
     </LinearLayout>
+
+
+
 
     <ImageView
         android:id="@+id/uploaded_image"

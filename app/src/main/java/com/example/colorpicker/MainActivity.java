@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public Button Upload_image, Take_Photo;
-    public ImageButton Confirm;
+    public ImageButton Confirm, Save;
     public TextView rgbValue;
     public ImageView uploadedImage, colorDisplay;
     public String rgbColor;
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         colorDisplay = findViewById(R.id.color_display);
         uploadedImage = findViewById(R.id.uploaded_image);
         Confirm =findViewById(R.id.confirm_button);
+        Save = findViewById(R.id.save_button);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
