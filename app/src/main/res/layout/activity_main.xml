@@ -52,7 +52,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_weight="1"
             >
 
@@ -63,7 +63,34 @@
                 android:padding="2dp"
                 android:text="@string/rgb_formate"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="17dp"
+                android:layout_weight="2"/>
+            <TextView
+                android:id="@+id/rgbcolor_min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="@string/rgb_formate_min"
+                android:textColor="@color/black"
+                android:textSize="17dp"
+                android:layout_weight="2"/>
+            <TextView
+                android:id="@+id/rgbcolor_max"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="@string/rgb_formate_max"
+                android:textColor="@color/black"
+                android:textSize="17dp"
+                android:layout_weight="2"/>
+            <TextView
+                android:id="@+id/median"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="@string/median_formate"
+                android:textColor="@color/black"
+                android:textSize="17dp"
                 android:layout_weight="2"/>
 
 

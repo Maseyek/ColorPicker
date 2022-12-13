@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">ColorPicker</string>
     <string name="rgb_formate">RGB: 0, 0, 0</string>
+    <string name="rgb_formate_min">RGB min: 0, 0, 0</string>
+    <string name="rgb_formate_max">RGB max: 0, 0, 0</string>
+    <string name="median_formate">Median: 0, 0, 0</string>
     <string name="confirm">confirm</string>
     <string name="title_activity_save">Save</string>
     <!-- Strings used for fragments for navigation -->

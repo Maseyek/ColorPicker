@@ -39,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
     public Button Upload_image, Take_Photo;
     public ImageButton Confirm, Save;
-    public TextView rgbValue;
+    public TextView rgbValue, rgbValueMin, rgbValueMax, Median;
     public ImageView uploadedImage, colorDisplay;
-    public String rgbColor;
+    public String rgbColor, rgbColorMin, rgbColorMax, medianValue;
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
-    public int precision = 5, evX, evY;
+    public int precision = 6, evX, evY;
 
     Bitmap bitmap_Temp, bitmap_Calc;
     boolean isFresh;
@@ -61,10 +61,13 @@ public class MainActivity extends AppCompatActivity {
         Upload_image = findViewById(R.id.Upload_image);
         Take_Photo = findViewById(R.id.Take_photo);
         rgbValue = findViewById(R.id.rgbcolor);
+        rgbValueMin = findViewById(R.id.rgbcolor_min);
+        rgbValueMax = findViewById(R.id.rgbcolor_max);
         colorDisplay = findViewById(R.id.color_display);
         uploadedImage = findViewById(R.id.uploaded_image);
         Confirm =findViewById(R.id.confirm_button);
         Save = findViewById(R.id.save_button);
+        Median = findViewById(R.id.median);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -121,22 +124,35 @@ public class MainActivity extends AppCompatActivity {
                 IntSummaryStatistics statG = Arrays.stream(g).summaryStatistics();
                 IntSummaryStatistics statB = Arrays.stream(b).summaryStatistics();
 
+                Arrays.sort(r);
+                Arrays.sort(g);
+                Arrays.sort(b);
+
                 int minR = statR.getMin();
                 int maxR = statR.getMax();
                 int averageR = (int) statR.getAverage();
+                int medianR = (r[r.length/2] + r[r.length/2 - 1])/2;;
 
                 int minG = statG.getMin();
                 int maxG = statG.getMax();
                 int averageG = (int) statG.getAverage();
+                int medianG = (g[g.length/2] + g[g.length/2 - 1])/2;
 
                 int minB = statB.getMin();
                 int maxB = statB.getMax();
                 int averageB = (int) statB.getAverage();
+                int medianB = (b[b.length/2] + b[b.length/2 - 1])/2;
                 array[0] = averageR;
                 array[1] = averageG;
                 array[2] = averageB;
                 rgbColor = String.valueOf(averageR) + "," + String.valueOf(averageG) + "," + String.valueOf(averageB);
-                rgbValue.setText("RGB:    " + rgbColor);
+                rgbColorMin = String.valueOf(minR) + "," + String.valueOf(minG) + "," + String.valueOf(minB);
+                rgbColorMax = String.valueOf(maxR) + "," + String.valueOf(maxG) + "," + String.valueOf(maxB);
+                medianValue = String.valueOf(medianR) + "," + String.valueOf(medianG) + "," + String.valueOf(medianB);
+                rgbValue.setText("RGB: " + rgbColor);
+                rgbValueMin.setText("RGB min: " + rgbColorMin);
+                rgbValueMax.setText("RGB min: " + rgbColorMax);
+                Median.setText("Median: " + medianValue);
 
             }
         });
