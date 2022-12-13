@@ -45,8 +45,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     public int precision = 5, evX, evY;
+
     Bitmap bitmap_Temp, bitmap_Calc;
     boolean isFresh;
+    public int[] array = new int[3];
+
 
 
 
@@ -89,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Confirm.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
                 //Toast.makeText(MainActivity.this, "it works", Toast.LENGTH_LONG).show();
@@ -128,8 +132,20 @@ public class MainActivity extends AppCompatActivity {
                 int minB = statB.getMin();
                 int maxB = statB.getMax();
                 int averageB = (int) statB.getAverage();
+                array[0] = averageR;
+                array[1] = averageG;
+                array[2] = averageB;
                 rgbColor = String.valueOf(averageR) + "," + String.valueOf(averageG) + "," + String.valueOf(averageB);
                 rgbValue.setText("RGB:    " + rgbColor);
+
+            }
+        });
+        Save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MeasurementActivity.class);
+                intent.putExtra("array", array);
+                startActivity(intent);
 
             }
         });
@@ -169,6 +185,9 @@ public class MainActivity extends AppCompatActivity {
                     int b = (touchColor >> 0) & 0xFF;
                     rgbColor = String.valueOf(r) + "," + String.valueOf(g) + "," + String.valueOf(b);
                     rgbValue.setText("RGB:    " + rgbColor);
+                    array[0] = r;
+                    array[1] = g;
+                    array[2] = b;
 
                     if (action==MotionEvent.ACTION_UP)
                     {
