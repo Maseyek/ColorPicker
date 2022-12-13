@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 medianValue = String.valueOf(medianR) + "," + String.valueOf(medianG) + "," + String.valueOf(medianB);
                 rgbValue.setText("RGB: " + rgbColor);
                 rgbValueMin.setText("RGB min: " + rgbColorMin);
-                rgbValueMax.setText("RGB min: " + rgbColorMax);
+                rgbValueMax.setText("RGB max: " + rgbColorMax);
                 Median.setText("Median: " + medianValue);
 
             }
