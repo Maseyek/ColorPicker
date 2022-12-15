@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.colorpicker.Database.AppDatabase;
+import com.example.colorpicker.Database.ColorMeasurementDao;
 import com.example.colorpicker.Database.Measurement;
 import com.example.colorpicker.Database.MeasurementAdapter;
 import com.example.colorpicker.Database.MeasurementDao;
@@ -39,16 +40,19 @@ public class MeasurementActivity extends AppCompatActivity {
         AppDatabase db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-name").allowMainThreadQueries().build();
         MeasurementDao dao = db.measurementDao();
+        ColorMeasurementDao colorMeasurementDao = db.colorMeasurementDao();
         measurements = dao.getAll();
 
-        MeasurementAdapter adapter = new MeasurementAdapter(measurements);
+        Intent intent = getIntent();
+        int[] array = intent.getIntArrayExtra("array");
+
+        MeasurementAdapter adapter = new MeasurementAdapter(measurements, array, colorMeasurementDao, MeasurementActivity.this);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        Intent intent = getIntent();
-        int[] array = intent.getIntArrayExtra("array");
+
 
         EditText inputView = new EditText(this);
 

@@ -1,5 +1,7 @@
 package com.example.colorpicker.Database;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +11,24 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.colorpicker.ColorMeasurementActivity;
+import com.example.colorpicker.MainActivity;
+import com.example.colorpicker.MeasurementActivity;
 import com.example.colorpicker.R;
 
 import java.util.List;
 
 public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.ViewHolder> {
     private List<Measurement> entities;
+    private int[] array;
+    private ColorMeasurementDao colorMeasurementDao;
+    private Context context;
 
-    public MeasurementAdapter(List<Measurement> entities) {
+    public MeasurementAdapter(List<Measurement> entities, int[] array, ColorMeasurementDao colorMeasurementDao, Context context) {
         this.entities = entities;
+        this.array = array;
+        this.colorMeasurementDao = colorMeasurementDao;
+        this.context = context;
     }
 
     @Override
@@ -31,12 +42,20 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
     public void onBindViewHolder(MeasurementAdapter.ViewHolder holder, int position) {
         Measurement entity = entities.get(position);
         holder.textView.setText(entity.Name);
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(),"click on item: ",Toast.LENGTH_LONG).show();
-            }
-        });
+        ColorMeasurement colorMeasurement = new ColorMeasurement();
+        colorMeasurement.R = array[0];
+        colorMeasurement.G = array[1];
+        colorMeasurement.B = array[2];
+        long millis = System.currentTimeMillis();
+        colorMeasurement.Date = new java.util.Date(millis);
+        holder.relativeLayout.setOnClickListener(view ->
+                {
+                    colorMeasurement.measurement_id = entity.id;
+                    colorMeasurementDao.insert(colorMeasurement);
+                    Intent intent = new Intent( context, ColorMeasurementActivity.class);
+                    intent.putExtra("measurementId", entity.id);
+                    context.startActivity(intent);
+                });
     }
 
     @Override
