@@ -99,60 +99,64 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(MainActivity.this, "it works", Toast.LENGTH_LONG).show();
-                int[] r = new int[precision*precision];
-                int[] g = new int[precision*precision];
-                int[] b = new int[precision*precision];
+                if(evX != 0 && evY !=0) {
+                    int[] r = new int[precision * precision];
+                    int[] g = new int[precision * precision];
+                    int[] b = new int[precision * precision];
 
 
+                    int count = 0;
+                    for (int i = -(precision / 2); i < (precision / 2); i++) {
+                        for (int j = -(precision / 2); j < (precision / 2); j++) {
+                            int touchColor = getColor(bitmap_Calc, evX + i, evY + j);
 
-                int count = 0;
-                for (int i = -(precision/2); i < (precision/2); i++)
-                {
-                    for(int j = -(precision/2); j < (precision/2); j++)
-                    {
-                        int touchColor = getColor(bitmap_Calc, evX + i, evY + j);
+                            r[count] = (touchColor >> 16) & 0xFF;
+                            g[count] = (touchColor >> 8) & 0xFF;
+                            b[count] = (touchColor >> 0) & 0xFF;
+                            count++;
 
-                        r[count] = (touchColor >> 16) & 0xFF;
-                        g[count] = (touchColor >> 8) & 0xFF;
-                        b[count] = (touchColor >> 0) & 0xFF;
-                        count++;
-
+                        }
                     }
+
+                    IntSummaryStatistics statR = Arrays.stream(r).summaryStatistics();
+                    IntSummaryStatistics statG = Arrays.stream(g).summaryStatistics();
+                    IntSummaryStatistics statB = Arrays.stream(b).summaryStatistics();
+
+                    Arrays.sort(r);
+                    Arrays.sort(g);
+                    Arrays.sort(b);
+
+                    int minR = statR.getMin();
+                    int maxR = statR.getMax();
+                    int averageR = (int) statR.getAverage();
+                    int medianR = (r[r.length / 2] + r[r.length / 2 - 1]) / 2;
+                    ;
+
+                    int minG = statG.getMin();
+                    int maxG = statG.getMax();
+                    int averageG = (int) statG.getAverage();
+                    int medianG = (g[g.length / 2] + g[g.length / 2 - 1]) / 2;
+
+                    int minB = statB.getMin();
+                    int maxB = statB.getMax();
+                    int averageB = (int) statB.getAverage();
+                    int medianB = (b[b.length / 2] + b[b.length / 2 - 1]) / 2;
+                    array[0] = averageR;
+                    array[1] = averageG;
+                    array[2] = averageB;
+                    rgbColor = String.valueOf(averageR) + "," + String.valueOf(averageG) + "," + String.valueOf(averageB);
+                    rgbColorMin = String.valueOf(minR) + "," + String.valueOf(minG) + "," + String.valueOf(minB);
+                    rgbColorMax = String.valueOf(maxR) + "," + String.valueOf(maxG) + "," + String.valueOf(maxB);
+                    medianValue = String.valueOf(medianR) + "," + String.valueOf(medianG) + "," + String.valueOf(medianB);
+                    rgbValue.setText("RGB: " + rgbColor);
+                    rgbValueMin.setText("RGB min: " + rgbColorMin);
+                    rgbValueMax.setText("RGB max: " + rgbColorMax);
+                    Median.setText("Median: " + medianValue);
                 }
-
-                IntSummaryStatistics statR = Arrays.stream(r).summaryStatistics();
-                IntSummaryStatistics statG = Arrays.stream(g).summaryStatistics();
-                IntSummaryStatistics statB = Arrays.stream(b).summaryStatistics();
-
-                Arrays.sort(r);
-                Arrays.sort(g);
-                Arrays.sort(b);
-
-                int minR = statR.getMin();
-                int maxR = statR.getMax();
-                int averageR = (int) statR.getAverage();
-                int medianR = (r[r.length/2] + r[r.length/2 - 1])/2;;
-
-                int minG = statG.getMin();
-                int maxG = statG.getMax();
-                int averageG = (int) statG.getAverage();
-                int medianG = (g[g.length/2] + g[g.length/2 - 1])/2;
-
-                int minB = statB.getMin();
-                int maxB = statB.getMax();
-                int averageB = (int) statB.getAverage();
-                int medianB = (b[b.length/2] + b[b.length/2 - 1])/2;
-                array[0] = averageR;
-                array[1] = averageG;
-                array[2] = averageB;
-                rgbColor = String.valueOf(averageR) + "," + String.valueOf(averageG) + "," + String.valueOf(averageB);
-                rgbColorMin = String.valueOf(minR) + "," + String.valueOf(minG) + "," + String.valueOf(minB);
-                rgbColorMax = String.valueOf(maxR) + "," + String.valueOf(maxG) + "," + String.valueOf(maxB);
-                medianValue = String.valueOf(medianR) + "," + String.valueOf(medianG) + "," + String.valueOf(medianB);
-                rgbValue.setText("RGB: " + rgbColor);
-                rgbValueMin.setText("RGB min: " + rgbColorMin);
-                rgbValueMax.setText("RGB max: " + rgbColorMax);
-                Median.setText("Median: " + medianValue);
+                else
+                {
+                    Toast.makeText(MainActivity.this, "Select an area before clicking the confirm button", Toast.LENGTH_LONG).show();
+                }
 
             }
         });
