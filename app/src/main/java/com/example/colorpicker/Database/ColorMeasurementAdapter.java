@@ -3,6 +3,7 @@ package com.example.colorpicker.Database;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,12 +32,9 @@ public class ColorMeasurementAdapter extends RecyclerView.Adapter<ColorMeasureme
     public void onBindViewHolder(ColorMeasurementAdapter.ViewHolder holder, int position) {
         ColorMeasurement entity = entities.get(position);
         holder.textView.setText(entity.Date.toString());
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(),"click on item: ",Toast.LENGTH_LONG).show();
-            }
-        });
+        holder.imageView.setBackgroundColor(android.graphics.Color.rgb(entity.R, entity.G, entity.B));
+        holder.relativeLayout.setOnClickListener(view ->
+                Toast.makeText(view.getContext(),"click on item: ",Toast.LENGTH_LONG).show());
     }
 
     @Override
@@ -46,6 +44,7 @@ public class ColorMeasurementAdapter extends RecyclerView.Adapter<ColorMeasureme
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
+        private final ImageView imageView;
         public RelativeLayout relativeLayout;
 
         public ViewHolder(View view) {
@@ -54,6 +53,7 @@ public class ColorMeasurementAdapter extends RecyclerView.Adapter<ColorMeasureme
 
             textView = (TextView) view.findViewById(R.id.textView);
             relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeLayout);
+            imageView = (ImageView) view.findViewById(R.id.imageView);
         }
 
         public TextView getTextView() {
