@@ -20,13 +20,13 @@ import java.util.List;
 
 public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.ViewHolder> {
     private List<Measurement> entities;
-    private int[] array;
+    private ColorMeasurement colorMeasurement;
     private ColorMeasurementDao colorMeasurementDao;
     private Context context;
 
-    public MeasurementAdapter(List<Measurement> entities, int[] array, ColorMeasurementDao colorMeasurementDao, Context context) {
+    public MeasurementAdapter(List<Measurement> entities, ColorMeasurement colorMeasurement, ColorMeasurementDao colorMeasurementDao, Context context) {
         this.entities = entities;
-        this.array = array;
+        this.colorMeasurement = colorMeasurement;
         this.colorMeasurementDao = colorMeasurementDao;
         this.context = context;
     }
@@ -42,15 +42,16 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
     public void onBindViewHolder(MeasurementAdapter.ViewHolder holder, int position) {
         Measurement entity = entities.get(position);
         holder.textView.setText(entity.Name);
-        ColorMeasurement colorMeasurement = new ColorMeasurement();
-        colorMeasurement.R = array[0];
-        colorMeasurement.G = array[1];
-        colorMeasurement.B = array[2];
         long millis = System.currentTimeMillis();
         colorMeasurement.Date = new java.util.Date(millis);
         holder.relativeLayout.setOnClickListener(view ->
                 {
-                    colorMeasurement.measurement_id = entity.id;
+                    if(entity.id == 0){
+                        colorMeasurement.measurement_id = entities.size();
+                    }
+                    else{
+                        colorMeasurement.measurement_id = entity.id;
+                    }
                     colorMeasurementDao.insert(colorMeasurement);
                     Intent intent = new Intent( context, ColorMeasurementActivity.class);
                     intent.putExtra("measurementId", entity.id);

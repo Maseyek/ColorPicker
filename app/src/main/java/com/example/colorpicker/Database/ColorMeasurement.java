@@ -7,6 +7,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity(tableName = "color_measurements",
@@ -14,7 +15,7 @@ import java.util.Date;
                 parentColumns = "id",
                 childColumns = "measurement_id",
                 onDelete = CASCADE))
-public class ColorMeasurement {
+public class ColorMeasurement implements Serializable {
     @PrimaryKey(autoGenerate = true)
     public int uid;
 
@@ -26,8 +27,35 @@ public class ColorMeasurement {
 
     @ColumnInfo(name = "B")
     public int B;
+
+    @ColumnInfo(name = "RMax")
+    public int RMax;
+
+    @ColumnInfo(name = "GMax")
+    public int GMax;
+
+    @ColumnInfo(name = "BMax")
+    public int BMax;
+    @ColumnInfo(name = "RMin")
+    public int RMin;
+
+    @ColumnInfo(name = "GMin")
+    public int GMin;
+
+    @ColumnInfo(name = "BMin")
+    public int BMin;
+
+    @ColumnInfo(name = "RMedian")
+    public int RMedian;
+
+    @ColumnInfo(name = "GMedian")
+    public int GMedian;
+
+    @ColumnInfo(name = "BMedian")
+    public int BMedian;
+
     @ColumnInfo(name = "Date")
     public Date Date;
 
-    public int measurement_id;
+    public Integer measurement_id = 0;
 }

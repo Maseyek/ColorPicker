@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface MeasurementDao {
     @Insert
-    void insert(Measurement measurement);
+    long insert(Measurement measurement);
 
     @Update
     void update(Measurement measurement);

@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.colorpicker.Database.AppDatabase;
+import com.example.colorpicker.Database.ColorMeasurement;
 import com.example.colorpicker.Database.ColorMeasurementDao;
 import com.example.colorpicker.Database.Measurement;
 import com.example.colorpicker.Database.MeasurementAdapter;
@@ -43,10 +44,9 @@ public class MeasurementActivity extends AppCompatActivity {
         ColorMeasurementDao colorMeasurementDao = db.colorMeasurementDao();
         measurements = dao.getAll();
 
-        Intent intent = getIntent();
-        int[] array = intent.getIntArrayExtra("array");
+        ColorMeasurement colorMeasurement = (ColorMeasurement) getIntent().getSerializableExtra("ColorMeasurement");
 
-        MeasurementAdapter adapter = new MeasurementAdapter(measurements, array, colorMeasurementDao, MeasurementActivity.this);
+        MeasurementAdapter adapter = new MeasurementAdapter(measurements, colorMeasurement, colorMeasurementDao, MeasurementActivity.this);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -66,10 +66,14 @@ public class MeasurementActivity extends AppCompatActivity {
                     String inputText = inputView.getText().toString();
                     Measurement measurement = new Measurement();
                     measurement.Name = inputText;
-                    dao.insert(measurement);
+                    int id = (int)dao.insert(measurement);
                     measurements.add(measurement);
-                    adapter.notifyItemInserted(measurements.size()-1);
-                    inputText = "";
+
+                    colorMeasurement.measurement_id = id;
+                    colorMeasurementDao.insert(colorMeasurement);
+                    Intent intent = new Intent( this, ColorMeasurementActivity.class);
+                    intent.putExtra("measurementId", id);
+                    startActivity(intent);
                 });
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 

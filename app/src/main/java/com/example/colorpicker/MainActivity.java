@@ -31,6 +31,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.colorpicker.Database.ColorMeasurement;
+
 import java.util.Arrays;
 import java.util.IntSummaryStatistics;
 
@@ -48,9 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
     Bitmap bitmap_Temp, bitmap_Calc;
     boolean isFresh;
-    public int[] array = new int[3];
-
-
+    ColorMeasurement colorMeasurement = new ColorMeasurement();
+    boolean ConfirmClicked = FALSE;
 
 
     @Override
@@ -130,28 +131,40 @@ public class MainActivity extends AppCompatActivity {
                     int maxR = statR.getMax();
                     int averageR = (int) statR.getAverage();
                     int medianR = (r[r.length / 2] + r[r.length / 2 - 1]) / 2;
-                    ;
 
                     int minG = statG.getMin();
                     int maxG = statG.getMax();
                     int averageG = (int) statG.getAverage();
                     int medianG = (g[g.length / 2] + g[g.length / 2 - 1]) / 2;
 
-                    int minB = statB.getMin();
-                    int maxB = statB.getMax();
-                    int averageB = (int) statB.getAverage();
-                    int medianB = (b[b.length / 2] + b[b.length / 2 - 1]) / 2;
-                    array[0] = averageR;
-                    array[1] = averageG;
-                    array[2] = averageB;
-                    rgbColor = String.valueOf(averageR) + "," + String.valueOf(averageG) + "," + String.valueOf(averageB);
-                    rgbColorMin = String.valueOf(minR) + "," + String.valueOf(minG) + "," + String.valueOf(minB);
-                    rgbColorMax = String.valueOf(maxR) + "," + String.valueOf(maxG) + "," + String.valueOf(maxB);
-                    medianValue = String.valueOf(medianR) + "," + String.valueOf(medianG) + "," + String.valueOf(medianB);
-                    rgbValue.setText("RGB: " + rgbColor);
-                    rgbValueMin.setText("RGB min: " + rgbColorMin);
-                    rgbValueMax.setText("RGB max: " + rgbColorMax);
-                    Median.setText("Median: " + medianValue);
+                int minB = statB.getMin();
+                int maxB = statB.getMax();
+                int averageB = (int) statB.getAverage();
+                int medianB = (b[b.length/2] + b[b.length/2 - 1])/2;
+
+
+                colorMeasurement.R = averageR;
+                colorMeasurement.G = averageG;
+                colorMeasurement.B = averageB;
+                colorMeasurement.RMax = maxR;
+                colorMeasurement.GMax = maxG;
+                colorMeasurement.BMax = maxB;
+                colorMeasurement.RMin = minR;
+                colorMeasurement.GMin = minG;
+                colorMeasurement.BMin = minB;
+                colorMeasurement.RMedian = medianR;
+                colorMeasurement.GMedian = medianG;
+                colorMeasurement.BMedian = medianB;
+
+                rgbColor = averageR + "," + averageG + "," + averageB;
+                rgbColorMin = minR + "," + minG + "," + minB;
+                rgbColorMax = maxR + "," + maxG + "," + maxB;
+                medianValue = medianR + "," + medianG + "," + medianB;
+                rgbValue.setText("RGB: " + rgbColor);
+                rgbValueMin.setText("RGB min: " + rgbColorMin);
+                rgbValueMax.setText("RGB max: " + rgbColorMax);
+                Median.setText("Median: " + medianValue);
+                ConfirmClicked = TRUE;
                 }
                 else
                 {
@@ -160,13 +173,17 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        Save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MeasurementActivity.class);
-                intent.putExtra("array", array);
-                startActivity(intent);
 
+        Save.setOnClickListener(v -> {
+            if (ConfirmClicked)
+            {
+                Intent intent = new Intent(MainActivity.this, MeasurementActivity.class);
+                intent.putExtra("ColorMeasurement", colorMeasurement);
+                startActivity(intent);
+            }
+            else
+            {
+                Toast.makeText(MainActivity.this, "Please confirm the color first", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -203,11 +220,8 @@ public class MainActivity extends AppCompatActivity {
                     int r = (touchColor >> 16) & 0xFF;
                     int g = (touchColor >> 8) & 0xFF;
                     int b = (touchColor >> 0) & 0xFF;
-                    rgbColor = String.valueOf(r) + "," + String.valueOf(g) + "," + String.valueOf(b);
+                    rgbColor = r + "," + g + "," + b;
                     rgbValue.setText("RGB:    " + rgbColor);
-                    array[0] = r;
-                    array[1] = g;
-                    array[2] = b;
 
                     if (action==MotionEvent.ACTION_UP)
                     {
