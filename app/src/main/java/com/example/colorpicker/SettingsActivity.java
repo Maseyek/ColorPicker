@@ -34,9 +34,9 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         precisionSeekBar = (SeekBar) findViewById(R.id.precisionSeekBar);
-        precisionSeekBar.setMax(20);
+        precisionSeekBar.setMax(10);
         precisionSeekBar.setMin(1);
-        precisionSeekBar.setProgress(precisionSeekBar.getMax() - precision + 1);
+        precisionSeekBar.setProgress(precisionSeekBar.getMax() - precision/2 + 1);
 
         precisionTextView = (TextView) findViewById(R.id.currentPrecision);
         precisionTextView.setText("Current precision: " + precision);
@@ -44,7 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
         precisionSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                precision = precisionSeekBar.getMax() - i + 1;
+                precision = 2*(precisionSeekBar.getMax() - i + 1);
                 precisionTextView.setText("Current precision: " + precision);
             }
 
