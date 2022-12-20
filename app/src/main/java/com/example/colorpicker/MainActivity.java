@@ -223,10 +223,10 @@ public class MainActivity extends AppCompatActivity {
                     int b = (touchColor >> 0) & 0xFF;
                     rgbColor = r + "," + g + "," + b;
                     rgbValue.setText("RGB:    " + rgbColor);
+                    colorDisplay.setBackgroundColor(getColor(bitmap_Calc, evX , evY));
 
                     if (action==MotionEvent.ACTION_UP)
                     {
-                        colorDisplay.setBackgroundColor(getColor(bitmap_Calc, evX , evY));
                         for (int i = -(precision/2); i < (precision/2); i++) {
                             for (int j = -(precision/2); j < (precision/2); j++) {
                                 bitmap_Temp.setPixel(evX + i, evY + j, Color.BLACK);
