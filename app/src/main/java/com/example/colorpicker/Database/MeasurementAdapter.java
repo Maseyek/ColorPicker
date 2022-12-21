@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.example.colorpicker.ColorMeasurementActivity;
 import com.example.colorpicker.MainActivity;
@@ -64,6 +65,16 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
                     intent.putExtra("measurementId", entity.id);
                     context.startActivity(intent);
                 });
+        holder.relativeLayout.setOnLongClickListener(view ->
+        {
+            AppDatabase db = Room.databaseBuilder(context,
+                    AppDatabase.class, "database-name").allowMainThreadQueries().build();
+            MeasurementDao MeasurementDao = db.measurementDao();
+            MeasurementDao.delete(entity);
+            super.notifyItemRemoved(entities.indexOf(entity));
+            entities.remove(entity);
+            return true;
+        });
     }
 
     @Override

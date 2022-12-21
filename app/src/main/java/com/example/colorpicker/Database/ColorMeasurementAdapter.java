@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.example.colorpicker.R;
 
@@ -73,6 +74,16 @@ public class ColorMeasurementAdapter extends RecyclerView.Adapter<ColorMeasureme
                     // Show the pop-up window at the center location of root relative layout
                     popupWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
                 });
+        holder.relativeLayout.setOnLongClickListener(view ->
+        {
+            AppDatabase db = Room.databaseBuilder(parent.getContext(),
+                    AppDatabase.class, "database-name").allowMainThreadQueries().build();
+            ColorMeasurementDao colorMeasurementDao = db.colorMeasurementDao();
+            colorMeasurementDao.delete(entity);
+            super.notifyItemRemoved(entities.indexOf(entity));
+            entities.remove(entity);
+            return true;
+        });
     }
 
     @Override
