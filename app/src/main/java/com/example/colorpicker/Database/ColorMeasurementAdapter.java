@@ -11,10 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.example.colorpicker.R;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ColorMeasurementAdapter extends RecyclerView.Adapter<ColorMeasurementAdapter.ViewHolder> {
@@ -42,9 +44,18 @@ public class ColorMeasurementAdapter extends RecyclerView.Adapter<ColorMeasureme
         ColorMeasurement entity = entities.get(position);
         // Create a SimpleDateFormat object with the desired format
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        // Format the Date object and print the result
-        String formattedDate = sdf.format(entity.Date);
-        holder.textView.setText(formattedDate);
+        if(entity.Date != null) {
+
+            // Format the Date object and print the result
+            String formattedDate = sdf.format(entity.Date);
+            holder.textView.setText(formattedDate);
+        }else if (entity.Date == null)
+        {
+            Date date = new Date();
+            holder.textView.setText(sdf.format(date));
+        }
+
+
         holder.imageView.setBackgroundColor(android.graphics.Color.rgb(entity.R, entity.G, entity.B));
         holder.relativeLayout.setOnClickListener(view ->
                 {
@@ -63,6 +74,16 @@ public class ColorMeasurementAdapter extends RecyclerView.Adapter<ColorMeasureme
                     // Show the pop-up window at the center location of root relative layout
                     popupWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
                 });
+        holder.relativeLayout.setOnLongClickListener(view ->
+        {
+            AppDatabase db = Room.databaseBuilder(parent.getContext(),
+                    AppDatabase.class, "database-name").allowMainThreadQueries().build();
+            ColorMeasurementDao colorMeasurementDao = db.colorMeasurementDao();
+            colorMeasurementDao.delete(entity);
+            super.notifyItemRemoved(entities.indexOf(entity));
+            entities.remove(entity);
+            return true;
+        });
     }
 
     @Override

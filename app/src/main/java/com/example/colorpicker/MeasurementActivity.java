@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,14 +30,16 @@ public class MeasurementActivity extends AppCompatActivity {
 
     public Button NewMeasurement;
     private List<Measurement> measurements;
+    private boolean showResults;
+    private ColorMeasurement colorMeasurement;
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measurement);
-        NewMeasurement = findViewById(R.id.newMeasurement);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        NewMeasurement = findViewById(R.id.newMeasurement);
 
         AppDatabase db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-name").allowMainThreadQueries().build();
@@ -44,7 +47,17 @@ public class MeasurementActivity extends AppCompatActivity {
         ColorMeasurementDao colorMeasurementDao = db.colorMeasurementDao();
         measurements = dao.getAll();
 
-        ColorMeasurement colorMeasurement = (ColorMeasurement) getIntent().getSerializableExtra("ColorMeasurement");
+        //Check if this activity was opened with button located in MainActivity's toolbar
+        showResults = getIntent().getBooleanExtra("showResults", false);
+        if(showResults){
+            //if yes, then disable 'NewMeasurement' button and create an empty colorMeasurement (needed for RecyclerViewAdapter)
+            colorMeasurement = new ColorMeasurement();
+            colorMeasurement.R = -1;
+            NewMeasurement.setVisibility(View.INVISIBLE);
+        }
+        else{
+            colorMeasurement = (ColorMeasurement) getIntent().getSerializableExtra("ColorMeasurement");
+        }
 
         MeasurementAdapter adapter = new MeasurementAdapter(measurements, colorMeasurement, colorMeasurementDao, MeasurementActivity.this);
 
@@ -52,10 +65,7 @@ public class MeasurementActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-
-
         EditText inputView = new EditText(this);
-
         // Set the input type to text
         inputView.setInputType(InputType.TYPE_CLASS_TEXT);
         AlertDialog.Builder builder = new AlertDialog.Builder(this)

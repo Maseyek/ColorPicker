@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     boolean ConfirmClicked = FALSE;
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -222,10 +223,10 @@ public class MainActivity extends AppCompatActivity {
                     int b = (touchColor >> 0) & 0xFF;
                     rgbColor = r + "," + g + "," + b;
                     rgbValue.setText("RGB:    " + rgbColor);
+                    colorDisplay.setBackgroundColor(getColor(bitmap_Calc, evX , evY));
 
                     if (action==MotionEvent.ACTION_UP)
                     {
-                        colorDisplay.setBackgroundColor(getColor(bitmap_Calc, evX , evY));
                         for (int i = -(precision/2); i < (precision/2); i++) {
                             for (int j = -(precision/2); j < (precision/2); j++) {
                                 bitmap_Temp.setPixel(evX + i, evY + j, Color.BLACK);
@@ -254,12 +255,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu:
+            case R.id.results:
+                showResults();
+                return true;
+            case R.id.settings:
                 openSettingsForResult();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void showResults(){
+        Intent intent = new Intent( MainActivity.this, MeasurementActivity.class);
+        intent.putExtra("showResults", true);
+        startActivity(intent);
     }
 
     public void openSettingsForResult() {
@@ -305,12 +315,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && !data.equals(null)){
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null){
             Uri Image = data.getData();
             uploadedImage.setImageURI(Image);
             isFresh = TRUE;
         }
         else if(requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK){
+            assert data != null;
             Bitmap photo = (Bitmap)data.getExtras().get("data");
             uploadedImage.setImageBitmap(photo);
             isFresh = TRUE;

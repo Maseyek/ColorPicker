@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.example.colorpicker.ColorMeasurementActivity;
 import com.example.colorpicker.MainActivity;
@@ -43,7 +44,10 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
         Measurement entity = entities.get(position);
         holder.textView.setText(entity.Name);
         long millis = System.currentTimeMillis();
-        colorMeasurement.Date = new java.util.Date(millis);
+        if(colorMeasurement.R != -1)
+        {
+            colorMeasurement.Date = new java.util.Date(millis);
+        }
         holder.relativeLayout.setOnClickListener(view ->
                 {
                     if(entity.id == 0){
@@ -52,11 +56,25 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementAdapter.
                     else{
                         colorMeasurement.measurement_id = entity.id;
                     }
-                    colorMeasurementDao.insert(colorMeasurement);
+
+                    //R == -1 means show results, so don't add this measurement do db
+                    if(colorMeasurement.R != -1){
+                        colorMeasurementDao.insert(colorMeasurement);
+                    }
                     Intent intent = new Intent( context, ColorMeasurementActivity.class);
                     intent.putExtra("measurementId", entity.id);
                     context.startActivity(intent);
                 });
+        holder.relativeLayout.setOnLongClickListener(view ->
+        {
+            AppDatabase db = Room.databaseBuilder(context,
+                    AppDatabase.class, "database-name").allowMainThreadQueries().build();
+            MeasurementDao MeasurementDao = db.measurementDao();
+            MeasurementDao.delete(entity);
+            super.notifyItemRemoved(entities.indexOf(entity));
+            entities.remove(entity);
+            return true;
+        });
     }
 
     @Override
