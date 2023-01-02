@@ -263,6 +263,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.settings:
                 openSettingsForResult();
                 return true;
+            case R.id.calibration_curve:
+                openCalibrationCurveView();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -279,6 +282,11 @@ public class MainActivity extends AppCompatActivity {
         //https://stackoverflow.com/questions/2091465/how-do-i-pass-data-between-activities-in-android-application
         intent.putExtra("precision", precision);
         settingsActivityResultLauncher.launch(intent);
+    }
+
+    public void openCalibrationCurveView(){
+        Intent intent = new Intent(this, CalibrationCurve.class);
+        startActivity(intent);
     }
 
     // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
