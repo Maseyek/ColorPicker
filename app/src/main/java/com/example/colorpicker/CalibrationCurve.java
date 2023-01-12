@@ -78,10 +78,21 @@ public class CalibrationCurve extends AppCompatActivity {
             public void onClick(View view) {
                 int[] ArrayCon = valuesCon.stream().mapToInt(i -> i).toArray();
                 int[] ArrayR = valuesR.stream().mapToInt(i -> i).toArray();
+                int[] ArrayG = valuesG.stream().mapToInt(i -> i).toArray();
+                int[] ArrayB = valuesG.stream().mapToInt(i -> i).toArray();
+                int[] sum = new int[ArrayB.length];
+                for(int i = 0; i < ArrayB.length; i++)
+                    sum[i] = ArrayR[i] + ArrayG[i] + ArrayB[i];
 
 
                 bestApprox(ArrayCon, ArrayR);
-                result.setText("R^2 = "+ r +" m = " + m + " c = " + c);
+                result.setText("R: "+ String.format("R^2 = %.4f", r) +String.format(" m = %.3f", m) + String.format(" c = %.3f", c));
+                bestApprox(ArrayCon, ArrayG);
+                result.append("\n G: "+ String.format("R^2 = %.4f", r) +String.format(" m = %.3f", m) + String.format(" c = %.3f", c));
+                bestApprox(ArrayCon, ArrayB);
+                result.append("\n B: "+ String.format("R^2 = %.4f", r) +String.format(" m = %.3f", m) + String.format(" c = %.3f", c));
+                bestApprox(ArrayCon, sum);
+                result.append("\n Sum: "+ String.format("R^2 = %.4f", r) +String.format(" m = %.3f", m) + String.format(" c = %.3f", c));
 
             }
         });
