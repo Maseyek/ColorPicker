@@ -18,8 +18,12 @@ import android.widget.Toast;
 import com.example.colorpicker.Database.AppDatabase;
 import com.example.colorpicker.Database.CalibrationCurve.CalibrationCurve;
 import com.example.colorpicker.Database.CalibrationCurve.CalibrationCurveDao;
+import com.example.colorpicker.Database.CalibrationCurve.CalibrationValue;
+import com.example.colorpicker.Database.CalibrationCurve.CalibrationValueAdapter;
+import com.example.colorpicker.Database.CalibrationCurve.CalibrationValueDao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CalibrationCurveActivity extends AppCompatActivity {
 
@@ -34,23 +38,29 @@ public class CalibrationCurveActivity extends AppCompatActivity {
     ArrayList<Integer> valuesB = new ArrayList<>();
 
     double m, c, r;
+    int calibrationCurveId;
 
-
+    CalibrationValueAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibration_curve);
 
-        int calibrationCurveId = getIntent().getIntExtra("calibrationCurveId", 0);
+        calibrationCurveId = getIntent().getIntExtra("calibrationCurveId", 0);
 
         AppDatabase db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "database-name").allowMainThreadQueries().build();
-        CalibrationCurveDao dao = db.calibrationCurveDao();
-        CalibrationCurve calibrationCurve = dao.getById(calibrationCurveId);
+        CalibrationValueDao dao = db.calibrationValueDao();
+
+
+        List<CalibrationValue> calibrationValues = dao.getCalibrationValuesByCurveId(calibrationCurveId);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new CalibrationValueAdapter(calibrationValues);
+        recyclerView.setAdapter(adapter);
+
         result = findViewById(R.id.resultR);
         resultX = findViewById(R.id.resultX);
 
@@ -71,15 +81,18 @@ public class CalibrationCurveActivity extends AppCompatActivity {
             String valueG = inputG.getText().toString();
             String valueB = inputB.getText().toString();
             String valueCon = inputCon.getText().toString();
-            valuesR.add(Integer.parseInt(valueR));
-            valuesG.add(Integer.parseInt(valueG));
-            valuesB.add(Integer.parseInt(valueB));
-            valuesCon.add(Integer.parseInt(valueCon));
+            CalibrationValue calibrationValue = new CalibrationValue();
+            calibrationValue.calibrationCurveId = calibrationCurveId;
+            calibrationValue.R = Integer.parseInt(valueR);
+            calibrationValue.G = Integer.parseInt(valueG);
+            calibrationValue.B = Integer.parseInt(valueB);
+            calibrationValue.Concentration = Integer.parseInt(valueCon);
+            dao.insert(calibrationValue);
+            // Get the position of the newly added item
+            int position = calibrationValues.size();
 
-
-
-        Toast.makeText(CalibrationCurveActivity.this, "Value added", Toast.LENGTH_LONG).show();
-
+            adapter.notifyItemInserted(position);
+            Toast.makeText(CalibrationCurveActivity.this, "Value added", Toast.LENGTH_LONG).show();
     });
 
         CalculateCurve.setOnClickListener(view -> {
