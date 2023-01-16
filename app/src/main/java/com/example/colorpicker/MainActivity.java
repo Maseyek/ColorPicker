@@ -32,7 +32,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.colorpicker.Database.ColorMeasurement;
+import com.example.colorpicker.Database.ColorMeasurement.ColorMeasurement;
 
 import java.util.Arrays;
 import java.util.IntSummaryStatistics;
@@ -214,10 +214,6 @@ public class MainActivity extends AppCompatActivity {
 
                     }
 
-
-
-
-
                     int touchColor = getColor(bitmap_Calc, evX, evY);
 
                     int r = (touchColor >> 16) & 0xFF;
@@ -285,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openCalibrationCurveView(){
-        Intent intent = new Intent(this, CalibrationCurve.class);
+        Intent intent = new Intent(this, CalibrationCurveListActivity.class);
         startActivity(intent);
     }
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CalibrationCurve">
+    tools:context=".CalibrationCurveActivity">
 
     <LinearLayout
         android:id="@+id/LinearLayout1"
@@ -73,18 +73,18 @@
 
     </LinearLayout>
 
-<!--    <LinearLayout-->
-<!--        android:id="@+id/LinearLayout3"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@id/LinearLayout2"-->
-<!--        android:orientation="horizontal">-->
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/recyclerView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent" />-->
+    <LinearLayout
+        android:id="@+id/LinearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/LinearLayout2"
+        android:orientation="horizontal">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-<!--    </LinearLayout>-->
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/LinearLayout3"
         android:layout_width="match_parent"
@@ -129,7 +129,7 @@
 
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/LinearLayout5"
+        android:id="@+id/LinearLayout10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/LinearLayout4"

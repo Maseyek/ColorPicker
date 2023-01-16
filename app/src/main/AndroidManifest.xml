@@ -17,7 +17,16 @@
         android:theme="@style/Theme.ColorPicker"
         tools:targetApi="31">
         <activity
-            android:name=".CalibrationCurve"
+            android:name=".CalibrationCurveListActivity"
+            android:exported="false"
+            android:label="@string/title_activity_calibration_curve_list"
+            android:theme="@style/Theme.ColorPicker">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".CalibrationCurveActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

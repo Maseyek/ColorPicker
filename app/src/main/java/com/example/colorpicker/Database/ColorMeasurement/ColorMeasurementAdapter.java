@@ -1,4 +1,4 @@
-package com.example.colorpicker.Database;
+package com.example.colorpicker.Database.ColorMeasurement;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -8,11 +8,11 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.example.colorpicker.Database.AppDatabase;
 import com.example.colorpicker.R;
 
 import java.text.SimpleDateFormat;
