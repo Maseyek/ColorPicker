@@ -3,6 +3,7 @@ package com.example.colorpicker.Database.CalibrationCurve;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,7 +38,7 @@ public class CalibrationValueAdapter extends RecyclerView.Adapter<CalibrationVal
         holder.tvG.setText(String.valueOf(calibrationValue.G));
         holder.tvB.setText(String.valueOf(calibrationValue.B));
         holder.tvConcentration.setText(String.valueOf(calibrationValue.Concentration));
-        holder.relativeLayout.setOnLongClickListener(view ->
+        holder.linearLayout.setOnLongClickListener(view ->
         {
 
             calibrationValueDao.delete(calibrationValue);
@@ -56,7 +57,7 @@ public class CalibrationValueAdapter extends RecyclerView.Adapter<CalibrationVal
         TextView tvG;
         TextView tvB;
         TextView tvConcentration;
-        public RelativeLayout relativeLayout;
+        public LinearLayout linearLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -64,7 +65,7 @@ public class CalibrationValueAdapter extends RecyclerView.Adapter<CalibrationVal
             tvG = itemView.findViewById(R.id.tv_g);
             tvB = itemView.findViewById(R.id.tv_b);
             tvConcentration = itemView.findViewById(R.id.tv_concentration);
-            relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeLayout);
+            linearLayout = itemView.findViewById(R.id.linearLayout);
         }
     }
 
