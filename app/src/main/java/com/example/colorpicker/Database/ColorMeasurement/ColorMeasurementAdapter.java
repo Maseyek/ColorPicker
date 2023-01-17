@@ -44,15 +44,16 @@ public class ColorMeasurementAdapter extends RecyclerView.Adapter<ColorMeasureme
         ColorMeasurement entity = entities.get(position);
         // Create a SimpleDateFormat object with the desired format
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
         if(entity.Date != null) {
 
             // Format the Date object and print the result
-            String formattedDate = sdf.format(entity.Date);
+            String formattedDate = "#" + (position+1) + " " + sdf.format(entity.Date);
             holder.textView.setText(formattedDate);
         }else if (entity.Date == null)
         {
             Date date = new Date();
-            holder.textView.setText(sdf.format(date));
+            holder.textView.setText("#" + (position+1) + " " + sdf.format(date));
         }
 
 

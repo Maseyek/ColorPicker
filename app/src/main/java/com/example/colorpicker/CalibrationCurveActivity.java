@@ -81,40 +81,48 @@ public class CalibrationCurveActivity extends AppCompatActivity {
             String valueG = inputG.getText().toString();
             String valueB = inputB.getText().toString();
             String valueCon = inputCon.getText().toString();
-            CalibrationValue calibrationValue = new CalibrationValue();
-            calibrationValue.calibrationCurveId = calibrationCurveId;
-            calibrationValue.R = Integer.parseInt(valueR);
-            calibrationValue.G = Integer.parseInt(valueG);
-            calibrationValue.B = Integer.parseInt(valueB);
-            calibrationValue.Concentration = Integer.parseInt(valueCon);
-            dao.insert(calibrationValue);
-            // Get the position of the newly added item
-            int position = calibrationValues.size();
+            if(!(valueR.isEmpty() || valueG.isEmpty() || valueB.isEmpty() || valueCon.isEmpty())) {
+                CalibrationValue calibrationValue = new CalibrationValue();
+                calibrationValue.calibrationCurveId = calibrationCurveId;
+                calibrationValue.R = Integer.parseInt(valueR);
+                calibrationValue.G = Integer.parseInt(valueG);
+                calibrationValue.B = Integer.parseInt(valueB);
+                calibrationValue.Concentration = Integer.parseInt(valueCon);
+                dao.insert(calibrationValue);
+                // Get the position of the newly added item
+                int position = calibrationValues.size();
 
-            adapter.notifyItemInserted(position);
-            Toast.makeText(CalibrationCurveActivity.this, "Value added", Toast.LENGTH_LONG).show();
-            recreate();
+                adapter.notifyItemInserted(position);
+                Toast.makeText(CalibrationCurveActivity.this, "Value added", Toast.LENGTH_LONG).show();
+                recreate();
+            }
+            else
+                Toast.makeText(CalibrationCurveActivity.this, "z pustego salomon nie naleje", Toast.LENGTH_LONG).show();
     });
 
         CalculateCurve.setOnClickListener(view -> {
-            int[] ArrayCon = calibrationValues.stream().mapToInt(x -> x.Concentration).toArray();
-            int[] ArrayR = calibrationValues.stream().mapToInt(x -> x.R).toArray();
-            int[] ArrayG = calibrationValues.stream().mapToInt(x -> x.G).toArray();
-            int[] ArrayB = calibrationValues.stream().mapToInt(x -> x.B).toArray();
-            int[] sum = new int[ArrayB.length];
-            for(int i = 0; i < ArrayB.length; i++)
-                sum[i] = ArrayR[i] + ArrayG[i] + ArrayB[i];
+
+            if(calibrationValues.size() < 2)
+                Toast.makeText(CalibrationCurveActivity.this, "Not enough points to proceed", Toast.LENGTH_LONG).show();
+            else {
+                int[] ArrayCon = calibrationValues.stream().mapToInt(x -> x.Concentration).toArray();
+                int[] ArrayR = calibrationValues.stream().mapToInt(x -> x.R).toArray();
+                int[] ArrayG = calibrationValues.stream().mapToInt(x -> x.G).toArray();
+                int[] ArrayB = calibrationValues.stream().mapToInt(x -> x.B).toArray();
+                int[] sum = new int[ArrayB.length];
+                for (int i = 0; i < ArrayB.length; i++)
+                    sum[i] = ArrayR[i] + ArrayG[i] + ArrayB[i];
 
 
-            bestApprox(ArrayCon, ArrayR);
-            result.setText("R: "+ String.format("R^2 = %.4f", r) +String.format(" m = %.3f", m) + String.format(" c = %.3f", c));
-            bestApprox(ArrayCon, ArrayG);
-            result.append("\n G: "+ String.format("R^2 = %.4f", r) +String.format(" m = %.3f", m) + String.format(" c = %.3f", c));
-            bestApprox(ArrayCon, ArrayB);
-            result.append("\n B: "+ String.format("R^2 = %.4f", r) +String.format(" m = %.3f", m) + String.format(" c = %.3f", c));
-            bestApprox(ArrayCon, sum);
-            result.append("\n Sum: "+ String.format("R^2 = %.4f", r) +String.format(" m = %.3f", m) + String.format(" c = %.3f", c));
-
+                bestApprox(ArrayCon, ArrayR);
+                result.setText("R: " + String.format("R^2 = %.4f", r) + String.format(" m = %.3f", m) + String.format(" c = %.3f", c));
+                bestApprox(ArrayCon, ArrayG);
+                result.append("\n G: " + String.format("R^2 = %.4f", r) + String.format(" m = %.3f", m) + String.format(" c = %.3f", c));
+                bestApprox(ArrayCon, ArrayB);
+                result.append("\n B: " + String.format("R^2 = %.4f", r) + String.format(" m = %.3f", m) + String.format(" c = %.3f", c));
+                bestApprox(ArrayCon, sum);
+                result.append("\n Sum: " + String.format("R^2 = %.4f", r) + String.format(" m = %.3f", m) + String.format(" c = %.3f", c));
+            }
         });
 
         CalculateX.setOnClickListener(view -> {
