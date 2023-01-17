@@ -93,13 +93,14 @@ public class CalibrationCurveActivity extends AppCompatActivity {
 
             adapter.notifyItemInserted(position);
             Toast.makeText(CalibrationCurveActivity.this, "Value added", Toast.LENGTH_LONG).show();
+            recreate();
     });
 
         CalculateCurve.setOnClickListener(view -> {
-            int[] ArrayCon = valuesCon.stream().mapToInt(i -> i).toArray();
-            int[] ArrayR = valuesR.stream().mapToInt(i -> i).toArray();
-            int[] ArrayG = valuesG.stream().mapToInt(i -> i).toArray();
-            int[] ArrayB = valuesG.stream().mapToInt(i -> i).toArray();
+            int[] ArrayCon = calibrationValues.stream().mapToInt(x -> x.Concentration).toArray();
+            int[] ArrayR = calibrationValues.stream().mapToInt(x -> x.R).toArray();
+            int[] ArrayG = calibrationValues.stream().mapToInt(x -> x.G).toArray();
+            int[] ArrayB = calibrationValues.stream().mapToInt(x -> x.B).toArray();
             int[] sum = new int[ArrayB.length];
             for(int i = 0; i < ArrayB.length; i++)
                 sum[i] = ArrayR[i] + ArrayG[i] + ArrayB[i];
