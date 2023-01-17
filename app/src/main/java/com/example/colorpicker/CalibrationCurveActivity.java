@@ -58,7 +58,7 @@ public class CalibrationCurveActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new CalibrationValueAdapter(calibrationValues);
+        adapter = new CalibrationValueAdapter(calibrationValues, dao);
         recyclerView.setAdapter(adapter);
 
         result = findViewById(R.id.resultR);

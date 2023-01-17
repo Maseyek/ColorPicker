@@ -3,10 +3,13 @@ package com.example.colorpicker.Database.CalibrationCurve;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
+import com.example.colorpicker.Database.AppDatabase;
 import com.example.colorpicker.R;
 
 import java.util.List;
@@ -14,9 +17,11 @@ import java.util.List;
 public class CalibrationValueAdapter extends RecyclerView.Adapter<CalibrationValueAdapter.ViewHolder> {
 
     private List<CalibrationValue> calibrationValues;
+    private CalibrationValueDao calibrationValueDao;
 
-    public CalibrationValueAdapter(List<CalibrationValue> calibrationValues) {
+    public CalibrationValueAdapter(List<CalibrationValue> calibrationValues, CalibrationValueDao calibrationValueDao) {
         this.calibrationValues = calibrationValues;
+        this.calibrationValueDao = calibrationValueDao;
     }
 
     @Override
@@ -32,6 +37,14 @@ public class CalibrationValueAdapter extends RecyclerView.Adapter<CalibrationVal
         holder.tvG.setText(String.valueOf(calibrationValue.G));
         holder.tvB.setText(String.valueOf(calibrationValue.B));
         holder.tvConcentration.setText(String.valueOf(calibrationValue.Concentration));
+        holder.relativeLayout.setOnLongClickListener(view ->
+        {
+
+            calibrationValueDao.delete(calibrationValue);
+            super.notifyItemRemoved(calibrationValues.indexOf(calibrationValue));
+            calibrationValues.remove(calibrationValue);
+            return true;
+        });
     }
     @Override
     public int getItemCount() {
@@ -43,6 +56,7 @@ public class CalibrationValueAdapter extends RecyclerView.Adapter<CalibrationVal
         TextView tvG;
         TextView tvB;
         TextView tvConcentration;
+        public RelativeLayout relativeLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -50,6 +64,7 @@ public class CalibrationValueAdapter extends RecyclerView.Adapter<CalibrationVal
             tvG = itemView.findViewById(R.id.tv_g);
             tvB = itemView.findViewById(R.id.tv_b);
             tvConcentration = itemView.findViewById(R.id.tv_concentration);
+            relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeLayout);
         }
     }
 
