@@ -1,4 +1,4 @@
-package com.example.colorpicker.Database;
+package com.example.colorpicker.Database.ColorMeasurement;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -8,11 +8,11 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.example.colorpicker.Database.AppDatabase;
 import com.example.colorpicker.R;
 
 import java.text.SimpleDateFormat;
@@ -44,15 +44,16 @@ public class ColorMeasurementAdapter extends RecyclerView.Adapter<ColorMeasureme
         ColorMeasurement entity = entities.get(position);
         // Create a SimpleDateFormat object with the desired format
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
         if(entity.Date != null) {
 
             // Format the Date object and print the result
-            String formattedDate = sdf.format(entity.Date);
+            String formattedDate = "#" + (position+1) + " " + sdf.format(entity.Date);
             holder.textView.setText(formattedDate);
         }else if (entity.Date == null)
         {
             Date date = new Date();
-            holder.textView.setText(sdf.format(date));
+            holder.textView.setText("#" + (position+1) + " " + sdf.format(date));
         }
 
 

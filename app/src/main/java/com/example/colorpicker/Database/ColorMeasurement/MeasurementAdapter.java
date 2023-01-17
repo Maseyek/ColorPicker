@@ -1,4 +1,4 @@
-package com.example.colorpicker.Database;
+package com.example.colorpicker.Database.ColorMeasurement;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,14 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.example.colorpicker.ColorMeasurementActivity;
-import com.example.colorpicker.MainActivity;
-import com.example.colorpicker.MeasurementActivity;
+import com.example.colorpicker.Database.AppDatabase;
 import com.example.colorpicker.R;
 
 import java.util.List;

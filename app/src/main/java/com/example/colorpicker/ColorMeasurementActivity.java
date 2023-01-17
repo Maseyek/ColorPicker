@@ -5,25 +5,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 
 import com.example.colorpicker.Database.AppDatabase;
-import com.example.colorpicker.Database.ColorMeasurement;
-import com.example.colorpicker.Database.ColorMeasurementAdapter;
-import com.example.colorpicker.Database.ColorMeasurementDao;
-import com.example.colorpicker.Database.Measurement;
-import com.example.colorpicker.Database.MeasurementAdapter;
-import com.example.colorpicker.Database.MeasurementDao;
+import com.example.colorpicker.Database.ColorMeasurement.ColorMeasurement;
+import com.example.colorpicker.Database.ColorMeasurement.ColorMeasurementAdapter;
+import com.example.colorpicker.Database.ColorMeasurement.ColorMeasurementDao;
 
 import java.util.List;
 

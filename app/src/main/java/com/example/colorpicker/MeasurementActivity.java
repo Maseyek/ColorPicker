@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -17,14 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.colorpicker.Database.AppDatabase;
-import com.example.colorpicker.Database.ColorMeasurement;
-import com.example.colorpicker.Database.ColorMeasurementDao;
-import com.example.colorpicker.Database.Measurement;
-import com.example.colorpicker.Database.MeasurementAdapter;
-import com.example.colorpicker.Database.MeasurementDao;
+import com.example.colorpicker.Database.ColorMeasurement.ColorMeasurement;
+import com.example.colorpicker.Database.ColorMeasurement.ColorMeasurementDao;
+import com.example.colorpicker.Database.ColorMeasurement.Measurement;
+import com.example.colorpicker.Database.ColorMeasurement.MeasurementAdapter;
+import com.example.colorpicker.Database.ColorMeasurement.MeasurementDao;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MeasurementActivity extends AppCompatActivity {
 

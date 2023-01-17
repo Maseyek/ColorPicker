@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/calibration_curve"
+        android:icon="@drawable/ic_curve"
+        android:title="CalibrationCurve"
+        app:showAsAction="ifRoom" />
     <item android:id="@+id/results"
         android:icon="@drawable/ic_baseline_assignment_24"
         android:title="Results"

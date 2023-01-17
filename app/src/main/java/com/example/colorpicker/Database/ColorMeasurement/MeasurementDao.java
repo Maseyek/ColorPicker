@@ -1,4 +1,4 @@
-package com.example.colorpicker.Database;
+package com.example.colorpicker.Database.ColorMeasurement;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
