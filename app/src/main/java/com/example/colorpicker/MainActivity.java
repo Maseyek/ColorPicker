@@ -338,6 +338,8 @@ public class MainActivity extends AppCompatActivity {
             uploadedImage.setImageBitmap(photo);
             isFresh = TRUE;
         }
+        uploadedImage.setScaleX(1);
+        uploadedImage.setScaleY(1);
     }
 
     @Override
