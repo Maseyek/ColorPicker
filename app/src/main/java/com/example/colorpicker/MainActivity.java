@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -38,6 +39,9 @@ import java.util.Arrays;
 import java.util.IntSummaryStatistics;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ScaleGestureDetector scaleGestureDetector;
+    private float mScaleFactor = 1.0f;
 
 
     public Button Upload_image, Take_Photo;
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         Save = findViewById(R.id.save_button);
         Median = findViewById(R.id.median);
 
+        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -197,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 try {
+                    scaleGestureDetector.onTouchEvent(motionEvent);
                     final int action = motionEvent.getAction();
                     evX = (int) motionEvent.getX();
                     evY = (int) motionEvent.getY();
@@ -352,5 +358,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener{
+        @Override
+        public boolean onScale(ScaleGestureDetector scaleGestureDetector){
+            mScaleFactor *= scaleGestureDetector.getScaleFactor();
+            mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 10.0f));
+            uploadedImage.setScaleX(mScaleFactor);
+            uploadedImage.setScaleY(mScaleFactor);
+            return true;
+        }
+    }
+
 
 }
