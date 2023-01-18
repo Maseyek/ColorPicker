@@ -97,7 +97,8 @@ public class CalibrationCurveActivity extends AppCompatActivity {
                 recreate();
             }
             else
-                Toast.makeText(CalibrationCurveActivity.this, "z pustego salomon nie naleje", Toast.LENGTH_LONG).show();
+                Toast.makeText(CalibrationCurveActivity.this, "You cannot get water out of a stone. " +
+                                                                        "\nFill all the values", Toast.LENGTH_LONG).show();
     });
 
         CalculateCurve.setOnClickListener(view -> {

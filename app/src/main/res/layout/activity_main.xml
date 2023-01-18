@@ -15,7 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:translationZ="90dp"
+        android:background="@color/white">
 
         <Button
             android:id="@+id/Upload_image"
@@ -41,7 +43,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/LinearLayout1"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:translationZ="90dp"
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/color_display"
@@ -55,6 +59,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1"
+
             >
 
             <TextView
@@ -100,7 +105,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="0">
+            android:layout_weight="0"
+            android:translationZ="90dp">
 
             <ImageButton
                 android:id="@+id/confirm_button"
