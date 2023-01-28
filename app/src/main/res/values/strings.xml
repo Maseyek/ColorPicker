@@ -15,4 +15,9 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_calibration_curve_list">CalibrationCurveListActivity</string>
+    <string name="title_activity_plot">PlotActivity</string>
+    <string name="tab_text_1">R</string>
+    <string name="tab_text_2">G</string>
+    <string name="tab_text_3">B</string>
+    <string name="tab_text_4">Sum</string>
 </resources>

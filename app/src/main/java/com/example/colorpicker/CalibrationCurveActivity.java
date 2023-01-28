@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,15 +28,10 @@ import java.util.List;
 
 public class CalibrationCurveActivity extends AppCompatActivity {
 
-    public Button CalculateCurve, CalculateX;
+    public Button CalculateCurve, CalculateX, PlotCalibrationCurves;
     public EditText inputR, inputG, inputB, inputCon, inputM, inputC, inputY;
     public TextView result, resultX;
     public ImageButton Confirm;
-
-    ArrayList<Integer> valuesCon = new ArrayList<>();
-    ArrayList<Integer> valuesR = new ArrayList<>();
-    ArrayList<Integer> valuesG = new ArrayList<>();
-    ArrayList<Integer> valuesB = new ArrayList<>();
 
     double m, c, r;
     int calibrationCurveId;
@@ -74,6 +70,7 @@ public class CalibrationCurveActivity extends AppCompatActivity {
         Confirm = findViewById(R.id.confirm_button);
         CalculateCurve = findViewById(R.id.Calculate);
         CalculateX = findViewById(R.id.CalculateX);
+        PlotCalibrationCurves = findViewById(R.id.PlotCalibrationCurves);
 
 
         Confirm.setOnClickListener(view -> {
@@ -141,6 +138,39 @@ public class CalibrationCurveActivity extends AppCompatActivity {
 
         });
 
+        PlotCalibrationCurves.setOnClickListener(view -> {
+            if (calibrationValues.size() < 2)
+            {
+                Toast.makeText(CalibrationCurveActivity.this, "Not enough points to proceed", Toast.LENGTH_LONG).show();
+                return;
+            }
+            int[] ArrayCon = calibrationValues.stream().mapToInt(x -> x.Concentration).toArray();
+            int[] ArrayR = calibrationValues.stream().mapToInt(x -> x.R).toArray();
+            int[] ArrayG = calibrationValues.stream().mapToInt(x -> x.G).toArray();
+            int[] ArrayB = calibrationValues.stream().mapToInt(x -> x.B).toArray();
+            int[] sum = new int[ArrayB.length];
+            for (int i = 0; i < ArrayB.length; i++)
+                sum[i] = ArrayR[i] + ArrayG[i] + ArrayB[i];
+
+            bestApprox(ArrayCon, ArrayR);
+            double[] redResults = {m, c, r};
+            bestApprox(ArrayCon, ArrayG);
+            double[] greenResults = {m, c, r};
+            bestApprox(ArrayCon, ArrayB);
+            double[] blueResults = {m, c, r};
+            bestApprox(ArrayCon, sum);
+            double[] sumResults = {m, c, r};
+            Intent intent = new Intent(this, PlotActivity.class);
+            intent.putExtra("redValues", ArrayR);
+            intent.putExtra("redResults", redResults);
+            intent.putExtra("greenValues", ArrayG);
+            intent.putExtra("greenResults", greenResults);
+            intent.putExtra("blueValues", ArrayB);
+            intent.putExtra("blueResults", blueResults);
+            intent.putExtra("sumValues", sum);
+            intent.putExtra("sumResults", sumResults);
+            startActivity(intent);
+        });
     }
 
 
