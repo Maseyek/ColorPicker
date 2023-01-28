@@ -169,6 +169,7 @@ public class CalibrationCurveActivity extends AppCompatActivity {
             intent.putExtra("blueResults", blueResults);
             intent.putExtra("sumValues", sum);
             intent.putExtra("sumResults", sumResults);
+            intent.putExtra("concentration", ArrayCon);
             startActivity(intent);
         });
     }

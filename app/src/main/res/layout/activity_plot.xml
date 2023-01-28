@@ -14,20 +14,52 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            >
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabRed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_text_1"
+                />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabGreen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_text_2"
+                />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_text_3"
+                />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabSum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_text_4"
+                />
+        </com.google.android.material.tabs.TabLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/LinearLayoutPlots"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/LinearLayoutTabs"
-        >
+        android:orientation="vertical">
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager"
+        <TextView
+            android:id="@+id/PlotTextView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:id="@+id/graph"/>
+
     </LinearLayout>
 
 </RelativeLayout>
