@@ -110,17 +110,27 @@ public class PlotActivity extends AppCompatActivity {
             max = 255*3;
 
         // set manual X bounds
+        int MinX = Arrays.stream(points).min().getAsInt();
+        int MaxX = Arrays.stream(points).max().getAsInt();
         graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setMinX(0);
-        if(color == Color.BLACK)
-            graph.getViewport().setMaxX(max);
+        if (MinX < 50)
+            graph.getViewport().setMinX(0);
         else
-            graph.getViewport().setMaxX(max);
+            graph.getViewport().setMinX(MinX-50);
+
+        graph.getViewport().setMaxX(MaxX+50);
 
         // set manual Y bounds
+        int MaxY = Arrays.stream(concentration).max().getAsInt();
+        int MinY = Arrays.stream(concentration).min().getAsInt();
         graph.getViewport().setYAxisBoundsManual(true);
-        graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(100);
+        if (MinY < 25)
+            graph.getViewport().setMinY(0);
+        else
+            graph.getViewport().setMinY(MinY-25);
+
+        graph.getViewport().setMaxY(MaxY+25);
+
 
         //Sorting the values (needed for plotting...)
         //Hashtable <key=ColorValue, value=Concentration>
@@ -143,12 +153,15 @@ public class PlotActivity extends AppCompatActivity {
         inputValues.setColor(color);
         inputValues.setShape(PointsGraphSeries.Shape.POINT);
 
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("Values");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Concentration [mg/L]");
+
 
         //y = mx + c -> x = (y-c)/m
         dataPoints = new DataPoint[max+1];
         for (int i = 0; i <= max; i++) {
             double x = (double) i;
-            int y = (int) (m * x + c);
+            int y = (int) ((x - c)/m);
             dataPoints[i] = new DataPoint(i, y);
         }
         LineGraphSeries<DataPoint> lineApproximation = new LineGraphSeries<>(dataPoints);
