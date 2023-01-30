@@ -17,6 +17,15 @@
         android:theme="@style/Theme.ColorPicker"
         tools:targetApi="31">
         <activity
+            android:name=".PlotActivity"
+            android:exported="false"
+            android:label="@string/title_activity_plot"
+            android:theme="@style/Theme.ColorPicker.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".CalibrationCurveListActivity"
             android:exported="false"
             android:label="@string/title_activity_calibration_curve_list"
