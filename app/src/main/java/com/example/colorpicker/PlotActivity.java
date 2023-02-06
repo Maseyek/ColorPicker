@@ -139,7 +139,7 @@ public class PlotActivity extends AppCompatActivity {
         //Hashtable <key=ColorValue, value=Concentration>
         Hashtable<Integer, Integer> values = new Hashtable<>();
         for(int i=0; i<points.length; i++){
-            values.put(points[i], concentration[i]);
+            values.put(concentration[i], points[i]);
         }
         List sortedKeys = new ArrayList(values.keySet());
         Collections.sort(sortedKeys);
@@ -147,7 +147,7 @@ public class PlotActivity extends AppCompatActivity {
         for(int i=0; i< sortedKeys.size(); i++){
             int x = (int) sortedKeys.get(i);
             int y = values.get(x);
-            dataPoints[i] = new DataPoint(y, x);
+            dataPoints[i] = new DataPoint(x, y);
         }
 
         // Plotting the input color values and corresponding concentrations
