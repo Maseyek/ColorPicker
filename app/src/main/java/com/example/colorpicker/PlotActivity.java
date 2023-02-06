@@ -112,24 +112,27 @@ public class PlotActivity extends AppCompatActivity {
         // set manual X bounds
         int MinX = Arrays.stream(points).min().getAsInt();
         int MaxX = Arrays.stream(points).max().getAsInt();
-        graph.getViewport().setXAxisBoundsManual(true);
-        if (MinX < 50)
-            graph.getViewport().setMinX(0);
-        else
-            graph.getViewport().setMinX(MinX-50);
 
-        graph.getViewport().setMaxX(MaxX+50);
-
-        // set manual Y bounds
         int MaxY = Arrays.stream(concentration).max().getAsInt();
         int MinY = Arrays.stream(concentration).min().getAsInt();
-        graph.getViewport().setYAxisBoundsManual(true);
-        if (MinY < 25)
-            graph.getViewport().setMinY(0);
-        else
-            graph.getViewport().setMinY(MinY-25);
 
-        graph.getViewport().setMaxY(MaxY+25);
+        graph.getViewport().setXAxisBoundsManual(true);
+        if (MinY < 50)
+            graph.getViewport().setMinX(0);
+        else
+            graph.getViewport().setMinX(MinY-50);
+
+        graph.getViewport().setMaxX(MaxY+50);
+
+        // set manual Y bounds
+
+        graph.getViewport().setYAxisBoundsManual(true);
+        if (MinX < 25)
+            graph.getViewport().setMinX(0);
+        else
+            graph.getViewport().setMinY(MinX-25);
+
+        graph.getViewport().setMaxY(MaxX+25);
 
 
         //Sorting the values (needed for plotting...)
@@ -144,7 +147,7 @@ public class PlotActivity extends AppCompatActivity {
         for(int i=0; i< sortedKeys.size(); i++){
             int x = (int) sortedKeys.get(i);
             int y = values.get(x);
-            dataPoints[i] = new DataPoint(x, y);
+            dataPoints[i] = new DataPoint(y, x);
         }
 
         // Plotting the input color values and corresponding concentrations
@@ -153,8 +156,8 @@ public class PlotActivity extends AppCompatActivity {
         inputValues.setColor(color);
         inputValues.setShape(PointsGraphSeries.Shape.POINT);
 
-        graph.getGridLabelRenderer().setHorizontalAxisTitle("Values");
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Concentration [mg/L]");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Values");
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("Concentration [mg/L]");
 
 
         //y = mx + c -> x = (y-c)/m
@@ -162,7 +165,7 @@ public class PlotActivity extends AppCompatActivity {
         for (int i = 0; i <= max; i++) {
             double x = (double) i;
             int y = (int) ((x - c)/m);
-            dataPoints[i] = new DataPoint(i, y);
+            dataPoints[i] = new DataPoint(y, i);
         }
         LineGraphSeries<DataPoint> lineApproximation = new LineGraphSeries<>(dataPoints);
         graph.addSeries(lineApproximation);
