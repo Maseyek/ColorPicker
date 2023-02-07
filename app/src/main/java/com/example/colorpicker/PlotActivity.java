@@ -110,36 +110,33 @@ public class PlotActivity extends AppCompatActivity {
             max = 255*3;
 
         // set manual X bounds
-        int MinX = Arrays.stream(points).min().getAsInt();
-        int MaxX = Arrays.stream(points).max().getAsInt();
-
-        int MaxY = Arrays.stream(concentration).max().getAsInt();
-        int MinY = Arrays.stream(concentration).min().getAsInt();
-
+        int MinX = Arrays.stream(concentration).min().getAsInt();
+        int MaxX = Arrays.stream(concentration).max().getAsInt();
         graph.getViewport().setXAxisBoundsManual(true);
-        if (MinY < 50)
+        if (MinX < 50)
             graph.getViewport().setMinX(0);
         else
-            graph.getViewport().setMinX(MinY-50);
+            graph.getViewport().setMinX(MinX-50);
 
-        graph.getViewport().setMaxX(MaxY+50);
+        graph.getViewport().setMaxX(MaxX+50);
 
         // set manual Y bounds
-
+        int MaxY = Arrays.stream(points).max().getAsInt();
+        int MinY = Arrays.stream(points).min().getAsInt();
         graph.getViewport().setYAxisBoundsManual(true);
-        if (MinX < 25)
-            graph.getViewport().setMinX(0);
+        if (MinY < 25)
+            graph.getViewport().setMinY(0);
         else
-            graph.getViewport().setMinY(MinX-25);
+            graph.getViewport().setMinY(MinY-25);
 
-        graph.getViewport().setMaxY(MaxX+25);
+        graph.getViewport().setMaxY(MaxY+25);
 
 
         //Sorting the values (needed for plotting...)
         //Hashtable <key=ColorValue, value=Concentration>
         Hashtable<Integer, Integer> values = new Hashtable<>();
         for(int i=0; i<points.length; i++){
-            values.put(concentration[i], points[i]);
+            values.put(concentration[i],points[i]);
         }
         List sortedKeys = new ArrayList(values.keySet());
         Collections.sort(sortedKeys);
@@ -156,16 +153,16 @@ public class PlotActivity extends AppCompatActivity {
         inputValues.setColor(color);
         inputValues.setShape(PointsGraphSeries.Shape.POINT);
 
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Values");
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Concentration [mg/L]");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Values");
 
 
         //y = mx + c -> x = (y-c)/m
         dataPoints = new DataPoint[max+1];
         for (int i = 0; i <= max; i++) {
             double x = (double) i;
-            int y = (int) ((x - c)/m);
-            dataPoints[i] = new DataPoint(y, i);
+            int y = (int) (m*x + c);
+            dataPoints[i] = new DataPoint(i, y);
         }
         LineGraphSeries<DataPoint> lineApproximation = new LineGraphSeries<>(dataPoints);
         graph.addSeries(lineApproximation);
