@@ -140,26 +140,37 @@ public class MainActivity extends AppCompatActivity {
 
                     int minR = (int) statR.getMin();
                     int maxR = (int) statR.getMax();
-                    double averageR = statR.getAverage();
-                    averageR = Double.parseDouble(df.format(averageR));
+                    String averageR = String.valueOf(statR.getAverage());
+                    Double parsed_averageR = Double.parseDouble(averageR);
+                    String temp1 = String.format("%.3f",parsed_averageR);
+                    temp1 = temp1.replace(",",".");
+                    //averageR = Double.parseDouble(df.format(averageR));
                     int medianR = (int)(r[r.length / 2] + r[r.length / 2 - 1]) / 2;
 
                     int minG = (int) statG.getMin();
                     int maxG = (int) statG.getMax();
-                    double averageG = (int) statG.getAverage();
-                    averageG = Double.parseDouble(df.format(averageG));
+                    String averageG = String.valueOf(statG.getAverage());
+                    Double parsed_averageG = Double.parseDouble(averageG);
+                    String temp2 = String.format("%.3f",parsed_averageG);
+                    temp2 = temp2.replace(",",".");
+
                     int medianG = (int)(g[g.length / 2] + g[g.length / 2 - 1]) / 2;
 
                 int minB = (int) statB.getMin();
                 int maxB = (int) statB.getMax();
-                double averageB = (int) statB.getAverage();
-                averageB = Double.parseDouble(df.format(averageB));
+                String averageB = String.valueOf(statB.getAverage());
+                Double parsed_averageB = Double.parseDouble(averageB);
+                String temp3 = String.format("%.3f",parsed_averageB);
+                temp3 = temp3.replace(",",".");
+
+
+
                 int medianB = (int)(b[b.length/2] + b[b.length/2 - 1])/2;
 
 
-                colorMeasurement.R = averageR;
-                colorMeasurement.G = averageG;
-                colorMeasurement.B = averageB;
+                colorMeasurement.R = Double.parseDouble(temp1);
+                colorMeasurement.G = Double.parseDouble(temp2);
+                colorMeasurement.B = Double.parseDouble(temp3);
                 colorMeasurement.RMax = maxR;
                 colorMeasurement.GMax = maxG;
                 colorMeasurement.BMax = maxB;
@@ -170,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                 colorMeasurement.GMedian = medianG;
                 colorMeasurement.BMedian = medianB;
 
-                rgbColor = averageR + "," + averageG + "," + averageB;
+                rgbColor = temp1 + "," + temp2 + "," + temp3;
                 rgbColorMin = minR + "," + minG + "," + minB;
                 rgbColorMax = maxR + "," + maxG + "," + maxB;
                 medianValue = medianR + "," + medianG + "," + medianB;

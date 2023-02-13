@@ -77,19 +77,36 @@ public class CalibrationCurveActivity extends AppCompatActivity {
 
         Confirm.setOnClickListener(view -> {
             String valueR = inputR.getText().toString();
+            Double parsed_R = Double.parseDouble(valueR);
+            String temp1 = String.format("%.3f",parsed_R);
+            temp1 = temp1.replace(",",".");
+
             String valueG = inputG.getText().toString();
+            Double parsed_G = Double.parseDouble(valueG);
+            String temp2 = String.format("%.3f",parsed_G);
+            temp2 = temp2.replace(",",".");
+
             String valueB = inputB.getText().toString();
+            Double parsed_B = Double.parseDouble(valueB);
+            String temp3 = String.format("%.3f",parsed_B);
+            temp3 = temp3.replace(",",".");
+
             String valueCon = inputCon.getText().toString();
+            Double parsed_Con = Double.parseDouble(valueCon);
+            String temp4 = String.format("%.3f",parsed_Con);
+            temp4 = temp4.replace(",",".");
+
+            //parsed_R = Double.parseDouble(df.format(parsed_R));
             if(!(valueR.isEmpty() || valueG.isEmpty() || valueB.isEmpty() || valueCon.isEmpty())) {
                 CalibrationValue calibrationValue = new CalibrationValue();
                 calibrationValue.calibrationCurveId = calibrationCurveId;
-                calibrationValue.R = Double.parseDouble(valueR);
-                calibrationValue.R = Double.parseDouble(df.format(calibrationValue.R));
-                calibrationValue.G = Double.parseDouble(valueG);
-                calibrationValue.G = Double.parseDouble(df.format(calibrationValue.G));
-                calibrationValue.B = Double.parseDouble(valueB);
-                calibrationValue.B = Double.parseDouble(df.format(calibrationValue.B));
-                calibrationValue.Concentration = Double.parseDouble(valueCon);
+                calibrationValue.R = Double.parseDouble(temp1);
+                //calibrationValue.R = Double.parseDouble(df.format(calibrationValue.R));
+                calibrationValue.G = Double.parseDouble(temp2);
+                //calibrationValue.G = Double.parseDouble(df.format(calibrationValue.G));
+                calibrationValue.B = Double.parseDouble(temp3);
+                //calibrationValue.B = Double.parseDouble(df.format(calibrationValue.B));
+                calibrationValue.Concentration = Double.parseDouble(temp4);
                 dao.insert(calibrationValue);
                 // Get the position of the newly added item
                 int position = calibrationValues.size();
