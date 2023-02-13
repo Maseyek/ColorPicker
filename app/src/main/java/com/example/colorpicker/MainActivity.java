@@ -35,7 +35,9 @@ import android.widget.Toast;
 
 import com.example.colorpicker.Database.ColorMeasurement.ColorMeasurement;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.DoubleSummaryStatistics;
 import java.util.IntSummaryStatistics;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     public int precision = 6, evX, evY;
+    DecimalFormat df =new DecimalFormat("#.###");
 
     Bitmap bitmap_Temp, bitmap_Calc;
     boolean isFresh;
@@ -109,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Toast.makeText(MainActivity.this, "it works", Toast.LENGTH_LONG).show();
                 if(evX != 0 && evY !=0) {
-                    int[] r = new int[precision * precision];
-                    int[] g = new int[precision * precision];
-                    int[] b = new int[precision * precision];
+                    double[] r = new double[precision * precision];
+                    double[] g = new double[precision * precision];
+                    double[] b = new double[precision * precision];
 
 
                     int count = 0;
@@ -127,28 +130,31 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
-                    IntSummaryStatistics statR = Arrays.stream(r).summaryStatistics();
-                    IntSummaryStatistics statG = Arrays.stream(g).summaryStatistics();
-                    IntSummaryStatistics statB = Arrays.stream(b).summaryStatistics();
+                    DoubleSummaryStatistics statR = Arrays.stream(r).summaryStatistics();
+                    DoubleSummaryStatistics statG = Arrays.stream(g).summaryStatistics();
+                    DoubleSummaryStatistics statB = Arrays.stream(b).summaryStatistics();
 
                     Arrays.sort(r);
                     Arrays.sort(g);
                     Arrays.sort(b);
 
-                    int minR = statR.getMin();
-                    int maxR = statR.getMax();
-                    int averageR = (int) statR.getAverage();
-                    int medianR = (r[r.length / 2] + r[r.length / 2 - 1]) / 2;
+                    int minR = (int) statR.getMin();
+                    int maxR = (int) statR.getMax();
+                    double averageR = statR.getAverage();
+                    averageR = Double.parseDouble(df.format(averageR));
+                    int medianR = (int)(r[r.length / 2] + r[r.length / 2 - 1]) / 2;
 
-                    int minG = statG.getMin();
-                    int maxG = statG.getMax();
-                    int averageG = (int) statG.getAverage();
-                    int medianG = (g[g.length / 2] + g[g.length / 2 - 1]) / 2;
+                    int minG = (int) statG.getMin();
+                    int maxG = (int) statG.getMax();
+                    double averageG = (int) statG.getAverage();
+                    averageG = Double.parseDouble(df.format(averageG));
+                    int medianG = (int)(g[g.length / 2] + g[g.length / 2 - 1]) / 2;
 
-                int minB = statB.getMin();
-                int maxB = statB.getMax();
-                int averageB = (int) statB.getAverage();
-                int medianB = (b[b.length/2] + b[b.length/2 - 1])/2;
+                int minB = (int) statB.getMin();
+                int maxB = (int) statB.getMax();
+                double averageB = (int) statB.getAverage();
+                averageB = Double.parseDouble(df.format(averageB));
+                int medianB = (int)(b[b.length/2] + b[b.length/2 - 1])/2;
 
 
                 colorMeasurement.R = averageR;

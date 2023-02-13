@@ -57,7 +57,7 @@ public class ColorMeasurementAdapter extends RecyclerView.Adapter<ColorMeasureme
         }
 
 
-        holder.imageView.setBackgroundColor(android.graphics.Color.rgb(entity.R, entity.G, entity.B));
+        holder.imageView.setBackgroundColor(android.graphics.Color.rgb((int) entity.R, (int) entity.G, (int) entity.B));
         holder.relativeLayout.setOnClickListener(view ->
                 {
                     // Find the text view and view by their ID
@@ -70,7 +70,7 @@ public class ColorMeasurementAdapter extends RecyclerView.Adapter<ColorMeasureme
                             "Median " + entity.RMedian+ ", " + entity.GMedian + ", "+ entity.BMedian + "\n";
                             // Modify the text view and view as needed
                     textView.setText(text); // green color
-                    imageView.setBackgroundColor(android.graphics.Color.rgb(entity.R, entity.G, entity.B));
+                    imageView.setBackgroundColor(android.graphics.Color.rgb((int) entity.R, (int) entity.G, (int) entity.B));
 
                     // Show the pop-up window at the center location of root relative layout
                     popupWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);

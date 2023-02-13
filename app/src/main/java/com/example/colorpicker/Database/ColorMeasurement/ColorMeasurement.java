@@ -20,13 +20,13 @@ public class ColorMeasurement implements Serializable {
     public int uid;
 
     @ColumnInfo(name = "R")
-    public int R;
+    public double R;
 
     @ColumnInfo(name = "G")
-    public int G;
+    public double G;
 
     @ColumnInfo(name = "B")
-    public int B;
+    public double B;
 
     @ColumnInfo(name = "RMax")
     public int RMax;
