@@ -36,15 +36,15 @@ public class PlotActivity extends AppCompatActivity {
     int selectedTab;
     TextView tv1;
 
-    int[] redValues;
+    double[] redValues;
     double[] redResults;
-    int[] greenValues;
+    double[] greenValues;
     double[] greenResults;
-    int[] blueValues;
+    double[] blueValues;
     double[] blueResults;
-    int[] sumValues;
+    double[] sumValues;
     double[] sumResults;
-    int[] concentration;
+    double[] concentration;
     GraphView graph;
 
     @Override
@@ -55,15 +55,15 @@ public class PlotActivity extends AppCompatActivity {
         tv1 = findViewById(R.id.PlotTextView1);
         graph = (GraphView) findViewById(R.id.graph);
 
-        redValues = getIntent().getIntArrayExtra("redValues");
+        redValues = getIntent().getDoubleArrayExtra("redValues");
         redResults = getIntent().getDoubleArrayExtra("redResults");
-        greenValues = getIntent().getIntArrayExtra("greenValues");
+        greenValues = getIntent().getDoubleArrayExtra("greenValues");
         greenResults = getIntent().getDoubleArrayExtra("greenResults");
-        blueValues = getIntent().getIntArrayExtra("blueValues");
+        blueValues = getIntent().getDoubleArrayExtra("blueValues");
         blueResults = getIntent().getDoubleArrayExtra("blueResults");
-        sumValues = getIntent().getIntArrayExtra("sumValues");
+        sumValues = getIntent().getDoubleArrayExtra("sumValues");
         sumResults = getIntent().getDoubleArrayExtra("sumResults");
-        concentration = getIntent().getIntArrayExtra("concentration");
+        concentration = getIntent().getDoubleArrayExtra("concentration");
 
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -97,7 +97,7 @@ public class PlotActivity extends AppCompatActivity {
         showPlot(redValues, redResults, Color.RED);
     }
 
-    void showPlot(int[] points, double[] parameters, int color) {
+    void showPlot(double[] points, double[] parameters, int color) {
         double m, c, r;
         m = parameters[0];
         c = parameters[1];
@@ -110,8 +110,8 @@ public class PlotActivity extends AppCompatActivity {
             max = 255*3;
 
         // set manual X bounds
-        int MinX = Arrays.stream(concentration).min().getAsInt();
-        int MaxX = Arrays.stream(concentration).max().getAsInt();
+        int MinX = (int)Arrays.stream(concentration).min().getAsDouble();
+        int MaxX = (int)Arrays.stream(concentration).max().getAsDouble();
         graph.getViewport().setXAxisBoundsManual(true);
         if (MinX < 50)
             graph.getViewport().setMinX(0);
@@ -121,8 +121,8 @@ public class PlotActivity extends AppCompatActivity {
         graph.getViewport().setMaxX(MaxX+50);
 
         // set manual Y bounds
-        int MaxY = Arrays.stream(points).max().getAsInt();
-        int MinY = Arrays.stream(points).min().getAsInt();
+        int MaxY = (int) Arrays.stream(points).max().getAsDouble();
+        int MinY = (int) Arrays.stream(points).min().getAsDouble();
         graph.getViewport().setYAxisBoundsManual(true);
         if (MinY < 25)
             graph.getViewport().setMinY(0);
@@ -134,7 +134,7 @@ public class PlotActivity extends AppCompatActivity {
 
         //Sorting the values (needed for plotting...)
         //Hashtable <key=ColorValue, value=Concentration>
-        Hashtable<Integer, Integer> values = new Hashtable<>();
+        Hashtable<Double, Double> values = new Hashtable<>();
         for(int i=0; i<points.length; i++){
             values.put(concentration[i],points[i]);
         }
@@ -142,8 +142,8 @@ public class PlotActivity extends AppCompatActivity {
         Collections.sort(sortedKeys);
         DataPoint[] dataPoints = new DataPoint[sortedKeys.size()];
         for(int i=0; i< sortedKeys.size(); i++){
-            int x = (int) sortedKeys.get(i);
-            int y = values.get(x);
+            double x = (double) sortedKeys.get(i);
+            double y = values.get(x);
             dataPoints[i] = new DataPoint(x, y);
         }
 
@@ -161,7 +161,7 @@ public class PlotActivity extends AppCompatActivity {
         dataPoints = new DataPoint[max+1];
         for (int i = 0; i <= max; i++) {
             double x = (double) i;
-            int y = (int) (m*x + c);
+            double y = (m*x + c);
             dataPoints[i] = new DataPoint(i, y);
         }
         LineGraphSeries<DataPoint> lineApproximation = new LineGraphSeries<>(dataPoints);

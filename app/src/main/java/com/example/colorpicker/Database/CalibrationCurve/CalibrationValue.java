@@ -18,13 +18,13 @@ public class CalibrationValue {
     @PrimaryKey(autoGenerate = true)
     public int id;
     @ColumnInfo(name = "R")
-    public int R;
+    public double R;
     @ColumnInfo(name = "G")
-    public int G;
+    public double G;
     @ColumnInfo(name = "B")
-    public int B;
+    public double B;
     @ColumnInfo(name = "Concentration")
-    public int Concentration;
+    public double Concentration;
     @ColumnInfo(name = "calibration_curve_id")
     public int calibrationCurveId;
 }

@@ -23,6 +23,7 @@ import com.example.colorpicker.Database.CalibrationCurve.CalibrationValue;
 import com.example.colorpicker.Database.CalibrationCurve.CalibrationValueAdapter;
 import com.example.colorpicker.Database.CalibrationCurve.CalibrationValueDao;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class CalibrationCurveActivity extends AppCompatActivity {
 
     double m, c, r;
     int calibrationCurveId;
+    DecimalFormat df =new DecimalFormat("#.###");
 
     CalibrationValueAdapter adapter;
     @Override
@@ -81,10 +83,13 @@ public class CalibrationCurveActivity extends AppCompatActivity {
             if(!(valueR.isEmpty() || valueG.isEmpty() || valueB.isEmpty() || valueCon.isEmpty())) {
                 CalibrationValue calibrationValue = new CalibrationValue();
                 calibrationValue.calibrationCurveId = calibrationCurveId;
-                calibrationValue.R = Integer.parseInt(valueR);
-                calibrationValue.G = Integer.parseInt(valueG);
-                calibrationValue.B = Integer.parseInt(valueB);
-                calibrationValue.Concentration = Integer.parseInt(valueCon);
+                calibrationValue.R = Double.parseDouble(valueR);
+                calibrationValue.R = Double.parseDouble(df.format(calibrationValue.R));
+                calibrationValue.G = Double.parseDouble(valueG);
+                calibrationValue.G = Double.parseDouble(df.format(calibrationValue.G));
+                calibrationValue.B = Double.parseDouble(valueB);
+                calibrationValue.B = Double.parseDouble(df.format(calibrationValue.B));
+                calibrationValue.Concentration = Double.parseDouble(valueCon);
                 dao.insert(calibrationValue);
                 // Get the position of the newly added item
                 int position = calibrationValues.size();
@@ -103,11 +108,11 @@ public class CalibrationCurveActivity extends AppCompatActivity {
             if(calibrationValues.size() < 2)
                 Toast.makeText(CalibrationCurveActivity.this, "Not enough points to proceed", Toast.LENGTH_LONG).show();
             else {
-                int[] ArrayCon = calibrationValues.stream().mapToInt(x -> x.Concentration).toArray();
-                int[] ArrayR = calibrationValues.stream().mapToInt(x -> x.R).toArray();
-                int[] ArrayG = calibrationValues.stream().mapToInt(x -> x.G).toArray();
-                int[] ArrayB = calibrationValues.stream().mapToInt(x -> x.B).toArray();
-                int[] sum = new int[ArrayB.length];
+                double[] ArrayCon = calibrationValues.stream().mapToDouble(x -> x.Concentration).toArray();
+                double[] ArrayR = calibrationValues.stream().mapToDouble(x -> x.R).toArray();
+                double[] ArrayG = calibrationValues.stream().mapToDouble(x -> x.G).toArray();
+                double[] ArrayB = calibrationValues.stream().mapToDouble(x -> x.B).toArray();
+                double[] sum = new double[ArrayB.length];
                 for (int i = 0; i < ArrayB.length; i++)
                     sum[i] = ArrayR[i] + ArrayG[i] + ArrayB[i];
 
@@ -144,11 +149,11 @@ public class CalibrationCurveActivity extends AppCompatActivity {
                 Toast.makeText(CalibrationCurveActivity.this, "Not enough points to proceed", Toast.LENGTH_LONG).show();
                 return;
             }
-            int[] ArrayCon = calibrationValues.stream().mapToInt(x -> x.Concentration).toArray();
-            int[] ArrayR = calibrationValues.stream().mapToInt(x -> x.R).toArray();
-            int[] ArrayG = calibrationValues.stream().mapToInt(x -> x.G).toArray();
-            int[] ArrayB = calibrationValues.stream().mapToInt(x -> x.B).toArray();
-            int[] sum = new int[ArrayB.length];
+            double[] ArrayCon = calibrationValues.stream().mapToDouble(x -> x.Concentration).toArray();
+            double[] ArrayR = calibrationValues.stream().mapToDouble(x -> x.R).toArray();
+            double[] ArrayG = calibrationValues.stream().mapToDouble(x -> x.G).toArray();
+            double[] ArrayB = calibrationValues.stream().mapToDouble(x -> x.B).toArray();
+            double[] sum = new double[ArrayB.length];
             for (int i = 0; i < ArrayB.length; i++)
                 sum[i] = ArrayR[i] + ArrayG[i] + ArrayB[i];
 
@@ -175,7 +180,7 @@ public class CalibrationCurveActivity extends AppCompatActivity {
     }
 
 
-    public void bestApprox(int x[], int y[]){
+    public void bestApprox(double x[], double y[]){
         int n = x.length;
         m = 0;
         c = 0;
